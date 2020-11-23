@@ -16,8 +16,8 @@ public class DBcommands {
     public Connection getConn()
     {
              Connection conn;    
-             String url = "jdbc:mysql://localhost:3306/Subscriptions";
-             String user = "Admin";
+             String url = "jdbc:mysql://localhost:3306/databaseschema_5318";
+             String user = "root";
              String password = "1234";
          try
          {

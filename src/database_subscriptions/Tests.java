@@ -18,7 +18,7 @@ public class Tests {
     
     public static void main(String []args ) throws SQLException
     {
-            DBcommands cmd = new DBcommands();
+      /*      DBcommands cmd = new DBcommands();
             String Table = "MAGAZINE";
             String Attributes = "Name, Mfrequency";
             String Values = "'Times', '235 weeks'";
@@ -26,7 +26,7 @@ public class Tests {
             cmd.insert(Table, Attributes, Values);
             cmd.delete(Table, Where);
            
-             
+      */       
     }
     
 }
