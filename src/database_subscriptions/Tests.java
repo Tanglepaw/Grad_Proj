@@ -18,15 +18,18 @@ public class Tests {
     
     public static void main(String []args ) throws SQLException
     {
-      /*      DBcommands cmd = new DBcommands();
+      /*       
+            DBcommands cmd = new DBcommands();
             String Table = "MAGAZINE";
             String Attributes = "Name, Mfrequency";
             String Values = "'Times', '235 weeks'";
-            String Where = "Name = 'Times'";
+            String Whereu = "Name = 'Times'";  // name Times must be in single quotes
+            String Whered = "Name = 'Yimes'";
+            String Set = "Name = 'Yimes'";
             cmd.insert(Table, Attributes, Values);
-            cmd.delete(Table, Where);
-           
-      */       
+            cmd.update(Table, Set, Whereu);
+            cmd.delete(Table, Whered);
+      */   
     }
     
 }
