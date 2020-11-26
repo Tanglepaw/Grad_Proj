@@ -79,5 +79,81 @@ public class DBcommands {
         }
         
     }
+    // Select needs to be overloaded in case the where is optional
+    public class select
+    {
+        public String[][] select(String Select, String From, String Where) throws SQLException
+        {
+            int rowCount = 0;
+            int clmCount = 0;
+            String [][] result;
+            try (Connection conn = getConn())
+            {
+                Statement myStmt = conn.createStatement();
+                String SQL = "Select " + Select 
+                        + " From "  + From
+                        + " Where " + Where;
+                
+                ResultSet resultSet = myStmt.executeQuery(SQL);
+                ResultSetMetaData rsmd = resultSet.getMetaData();
+                clmCount = rsmd.getColumnCount();
+                
+                if (resultSet.last())
+                {
+                    rowCount = resultSet.getRow();
+                    resultSet.beforeFirst();
+                }
+                result = new String [rowCount][clmCount];
+                
+                for (int r=0; r < rowCount; r++)
+                {
+                    for (int c = 0; c < clmCount; c++)
+                    {
+                        result[r][c] = resultSet.getString(c);
+                    }
+                }
+                
+                
+            }           
+            
+            return result;
+        }
+        
+        public String[][] select(String Select, String From) throws SQLException
+        {
+            int rowCount = 0;
+            int clmCount = 0;
+            String [][] result;
+            try (Connection conn = getConn())
+            {
+                Statement myStmt = conn.createStatement();
+                String SQL = "Select " + Select 
+                        + " From "  + From;
+                
+                ResultSet resultSet = myStmt.executeQuery(SQL);
+                ResultSetMetaData rsmd = resultSet.getMetaData();
+                clmCount = rsmd.getColumnCount();
+                
+                if (resultSet.last())
+                {
+                    rowCount = resultSet.getRow();
+                    resultSet.beforeFirst();
+                }
+                result = new String [rowCount][clmCount];
+                
+                for (int r=0; r < rowCount; r++)
+                {
+                    for (int c = 0; c < clmCount; c++)
+                    {
+                        result[r][c] = resultSet.getString(c);
+                    }
+                }
+                
+                
+            }           
+            
+            return result;
+        }
+    }
     
 }
