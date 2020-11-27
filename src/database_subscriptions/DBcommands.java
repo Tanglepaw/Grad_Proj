@@ -65,6 +65,7 @@ public class DBcommands {
     /* Updates a table */
     public void update(String Table, String Set, String Where) throws SQLException
     {
+        
         try (Connection conn = getConn())
         {
             Statement myStmt = conn.createStatement();
@@ -87,6 +88,11 @@ public class DBcommands {
             int rowCount = 0;
             int clmCount = 0;
             String [][] result;
+            if (Where.isBlank() || Where.isEmpty())
+            {
+                result = select(Select,From);
+                return result;
+            }
             try (Connection conn = getConn())
             {
                 Statement myStmt = conn.createStatement();
