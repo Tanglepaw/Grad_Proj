@@ -26,6 +26,9 @@ public class Magazine_Subscription_Page extends javax.swing.JFrame {
     Connection conn = null;
     PreparedStatement pst = null;
     ResultSet rs = null;
+    String Database = "Subscriptions";
+    String User = "Admin";
+    String Pass = "1234";
     
     public Magazine_Subscription_Page() {
         initComponents();
@@ -237,7 +240,7 @@ public class Magazine_Subscription_Page extends javax.swing.JFrame {
             //Price = No of issues * Rate(Dollar amount per item)
             //End_Date = Start Date + No of Issues 
             
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/databaseschema_5318", "root", "1234");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+Database, User, Pass);
             pst = conn.prepareStatement(sql);
             
             
@@ -296,7 +299,7 @@ public class Magazine_Subscription_Page extends javax.swing.JFrame {
     public void showTableData()
     {
         try{
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/databaseschema_5318", "root", "1234");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+Database, User, Pass);
              String sql = "SELECT * FROM `databaseschema_5318`.`msub`";
              pst = conn.prepareStatement(sql);
              rs = pst.executeQuery();

@@ -27,6 +27,9 @@ public class Customer_Page extends javax.swing.JFrame {
     Connection conn = null;
     PreparedStatement pst = null;
     ResultSet rs = null; 
+    String Database = "Subscriptions"; //  Subscriptions  databaseschema_5318
+    String User = "Admin"; //   Admin  root
+    String Pass = "1234";
     
     public Customer_Page() {
         initComponents();
@@ -230,7 +233,7 @@ public class Customer_Page extends javax.swing.JFrame {
             + "(`IDnum`, `Fname`, `Minit`, `Lname`, `Address`) "
             + "VALUES (?, ?, ?, ?, ?)";
             
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/databaseschema_5318", "root", "1234");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+Database, User, Pass);
             pst = conn.prepareStatement(sql);
             pst.setString(1,CustID_Text_Field.getText());
             pst.setString(2,FirstName_Text_Field.getText());
@@ -251,7 +254,7 @@ public class Customer_Page extends javax.swing.JFrame {
                 try {
             String sql = "DELETE FROM `databaseschema_5318`.`customer` WHERE IDnum =?";
  
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/databaseschema_5318", "root", "1234");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+Database, User, Pass);
             pst = conn.prepareStatement(sql);
             pst.setString(1,CustID_Text_Field.getText());
             pst.executeUpdate();
@@ -270,7 +273,7 @@ public class Customer_Page extends javax.swing.JFrame {
         try {
             String sql = "UPDATE `Subscriptions`.`customer` SET Fname=?, Minit=?, Lname=?, Address=? WHERE IDnum=?";
        
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/databaseschema_5318", "root", "1234");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+Database, User, Pass);
             pst = conn.prepareStatement(sql);
             
             pst.setString(5,CustID_Text_Field.getText());
@@ -292,7 +295,7 @@ public class Customer_Page extends javax.swing.JFrame {
     public void showTableData()
     {
         try{
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/databaseschema_5318", "root", "1234");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+Database, User, Pass);
              String sql = "SELECT * FROM `databaseschema_5318`.`customer`";
              pst = conn.prepareStatement(sql);
              rs = pst.executeQuery();
