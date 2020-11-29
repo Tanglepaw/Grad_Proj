@@ -194,6 +194,8 @@ public class Newspaper_Subscription_Page extends javax.swing.JFrame {
     private void Insert_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Insert_ButtonActionPerformed
 
         // TODO add your handling code here:
+        // price = 
+        
 
     }//GEN-LAST:event_Insert_ButtonActionPerformed
 

@@ -28,41 +28,14 @@ public class Publication_Page extends javax.swing.JFrame {
     Connection conn = null;
     PreparedStatement pst = null;
     ResultSet rs = null; 
-    String Database = "Subscriptions";
-    String User = "Admin";
+    String Database = "databaseschema_5318";
+    String User = "root";
     String Password = "1234";
     
     public Publication_Page() {
         initComponents();
         showTableData();
     }
-    
-    
- /*   public ArrayList<Publication_Search> listPubs(String Search) throws SQLException
-    {
-        ArrayList<Publication_Search> pubList = new ArrayList<Publication_Search>();
-        DBcommands cmd = new DBcommands();
-        ResultSet rs;
-        String select = "*";
-        String from = "PUBLICATION";
-        rs = cmd.select(select, from);
-        
-        Publication_Search pub;
-        
-        while (rs.next())
-        {
-            pub = new Publication_Search(
-                    rs.getString("");
-                    rs.getString("");
-                    rs.getString("");
-            );
-            
-        }
-        
-        return null;
-        
-    }*/
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -489,8 +462,8 @@ public class Publication_Page extends javax.swing.JFrame {
     private void TableControlActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TableControlActionPerformed
         // TODO add your handling code here:
         //Change frequency combo box depending on magazine or newspaper
-        DefaultComboBoxModel mag = new DefaultComboBoxModel(new String[]{"Weekly", "Monthly", "Quarterly"});
-        DefaultComboBoxModel news = new DefaultComboBoxModel(new String[]{"Daily", "Weekly"});
+        DefaultComboBoxModel mag = new DefaultComboBoxModel(new String[]{"7", "30", "90"});
+        DefaultComboBoxModel news = new DefaultComboBoxModel(new String[]{"1", "7"});
         if ("Magazine".equals(TableControl.getSelectedItem()))
         {
             FrequencyComBox.setModel(mag);

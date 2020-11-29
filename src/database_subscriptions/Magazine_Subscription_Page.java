@@ -5,10 +5,12 @@
  */
 package database_subscriptions;
 
+import java.awt.HeadlessException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import javax.swing.JOptionPane;
 import net.proteanit.sql.DbUtils;
 
@@ -227,7 +229,46 @@ public class Magazine_Subscription_Page extends javax.swing.JFrame {
     }//GEN-LAST:event_Subscription_Back_ButtonActionPerformed
 
     private void Insert_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Insert_ButtonActionPerformed
+        try {
+            String sql = "INSERT INTO `databaseschema_5318`.`msub` "
+            + "(`IDnum`, `Pname`, `No_Of_Issues`, `End_Date`, `Start_Date`, `Price`)"
+            + "VALUES (?, ?, ?, ?, ?, ?)";
 
+            //Price = No of issues * Rate(Dollar amount per item)
+            //End_Date = Start Date + No of Issues 
+            
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/databaseschema_5318", "root", "1234");
+            pst = conn.prepareStatement(sql);
+            
+            
+            int No_Of_Issues = Integer.parseInt(NoOfIssues_Text_Field.getText());
+            String Pname = Pname_Text_Field.getText();
+           
+            String sqlrate = "SELECT Rate FROM `databaseschema_5318`.`publication` WHERE Name = " + Pname + " AND Type = Magazine";
+            pst = conn.prepareStatement(sqlrate);
+            rs = pst.executeQuery();  
+            
+            float rate = (rs.getFloat(0));
+            
+            float Price = No_Of_Issues * rate;
+            
+         
+            
+            
+          
+            pst.setString(1,CustID_Text_Field.getText());
+            pst.setString(2,Pname_Text_Field.getText());
+            pst.setString(3,NoOfIssues_Text_Field.getText());
+            pst.setString(4,EndDate_Text_Field.getText());
+            pst.setString(5,StartDate_Text_Field.getText());
+            pst.setFloat(6, Price);
+            pst.executeUpdate();
+            JOptionPane.showMessageDialog(null, "Inserted Successfully");
+        }catch(SQLException | HeadlessException ex) {
+            JOptionPane.showMessageDialog(null, ex);
+        }
+        //Refresh DB
+        showTableData();
     }//GEN-LAST:event_Insert_ButtonActionPerformed
 
     private void Update_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Update_ButtonActionPerformed
