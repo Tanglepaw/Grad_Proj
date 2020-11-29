@@ -5,13 +5,16 @@
  */
 package database_subscriptions;
 
+import java.awt.HeadlessException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
+import java.sql.*;
+import javax.swing.JOptionPane;
+import net.proteanit.sql.DbUtils;
 /**
  *
  * @author Em-kun
@@ -27,6 +30,7 @@ public class Customer_Page extends javax.swing.JFrame {
     
     public Customer_Page() {
         initComponents();
+        showTableData();
     }
 
     /**
@@ -55,7 +59,6 @@ public class Customer_Page extends javax.swing.JFrame {
         Insert_Button = new javax.swing.JButton();
         Update_Button = new javax.swing.JButton();
         Delete_Button = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -111,10 +114,18 @@ public class Customer_Page extends javax.swing.JFrame {
         });
 
         Update_Button.setText("UPDATE");
+        Update_Button.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Update_ButtonActionPerformed(evt);
+            }
+        });
 
         Delete_Button.setText("DELETE");
-
-        jButton4.setText("jButton4");
+        Delete_Button.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Delete_ButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -132,9 +143,7 @@ public class Customer_Page extends javax.swing.JFrame {
                                 .addComponent(Update_Button)
                                 .addGap(130, 130, 130)
                                 .addComponent(Delete_Button)
-                                .addGap(131, 131, 131)
-                                .addComponent(jButton4)
-                                .addGap(67, 67, 67))
+                                .addGap(271, 271, 271))
                             .addComponent(Customers_Back_Button))
                         .addGap(58, 58, 58))))
             .addGroup(layout.createSequentialGroup()
@@ -180,8 +189,7 @@ public class Customer_Page extends javax.swing.JFrame {
                     .addComponent(MiddleName_Text_Field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(Insert_Button)
                     .addComponent(Update_Button)
-                    .addComponent(Delete_Button)
-                    .addComponent(jButton4))
+                    .addComponent(Delete_Button))
                 .addGap(22, 22, 22)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(LastName_Label)
@@ -215,35 +223,85 @@ public class Customer_Page extends javax.swing.JFrame {
     }//GEN-LAST:event_LastName_Text_FieldActionPerformed
 
     private void Insert_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Insert_ButtonActionPerformed
-        try {
+
             // TODO add your handling code here:
-            /*     try {
+        try {
             String sql = "INSERT INTO `databaseschema_5318`.`customer` "
-            + "(`IDnum`, `Fname`, `Lname`, `Address`) "
-            + "VALUES ('?', '?', '?', '?'); ";
+            + "(`IDnum`, `Fname`, `Minit`, `Lname`, `Address`) "
+            + "VALUES (?, ?, ?, ?, ?)";
             
             conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/databaseschema_5318", "root", "1234");
-            
-            */
-            
-            String Table = null;
-            String Attribute = null;
-            String Value = null;
-            
-            Table = "customer";
-            Attribute = "`IDnum`, `Fname`,  `Lname`, `Minit`, `Address`";
-            Value = "'" + CustID_Text_Field.getText() + "' , '" +FirstName_Text_Field.getText() + "' , '" + MiddleName_Text_Field.getText() + "' , '" + LastName_Text_Field.getText() + "' , '" + Address_Text_Field.getText() + "'";
-            
-            DBcommands cmd = new DBcommands();
-            cmd.insert(Table, Attribute, Value);
-        } catch (SQLException ex) {
-            Logger.getLogger(Customer_Page.class.getName()).log(Level.SEVERE, null, ex);
+            pst = conn.prepareStatement(sql);
+            pst.setString(1,CustID_Text_Field.getText());
+            pst.setString(2,FirstName_Text_Field.getText());
+            pst.setString(3,MiddleName_Text_Field.getText());
+            pst.setString(4,LastName_Text_Field.getText());
+            pst.setString(5,Address_Text_Field.getText());
+            pst.executeUpdate();
+            JOptionPane.showMessageDialog(null, "Inserted Successfully");
+        }catch(SQLException | HeadlessException ex) {
+            JOptionPane.showMessageDialog(null, ex);
         }
-             
-   
-   
+        //Refresh DB
+        showTableData();
     }//GEN-LAST:event_Insert_ButtonActionPerformed
 
+    private void Delete_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Delete_ButtonActionPerformed
+        // TODO add your handling code here:
+                try {
+            String sql = "DELETE FROM `databaseschema_5318`.`customer` WHERE IDnum =?";
+ 
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/databaseschema_5318", "root", "1234");
+            pst = conn.prepareStatement(sql);
+            pst.setString(1,CustID_Text_Field.getText());
+            pst.executeUpdate();
+            JOptionPane.showMessageDialog(null, "Deleted Successfully");
+        }catch(SQLException | HeadlessException ex) {
+            JOptionPane.showMessageDialog(null, ex);
+        }
+         
+        //Refresh
+        showTableData();
+        
+    }//GEN-LAST:event_Delete_ButtonActionPerformed
+
+    private void Update_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Update_ButtonActionPerformed
+        // TODO add your handling code here:
+        try {
+            String sql = "UPDATE `databaseschema_5318`.`customer` SET Fname=?, Minit=?, Lname=?, Address=? WHERE IDnum=?";
+       
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/databaseschema_5318", "root", "1234");
+            pst = conn.prepareStatement(sql);
+            
+            pst.setString(5,CustID_Text_Field.getText());
+            pst.setString(1,FirstName_Text_Field.getText());
+            pst.setString(2,MiddleName_Text_Field.getText());
+            pst.setString(3,LastName_Text_Field.getText());
+            pst.setString(4,Address_Text_Field.getText());
+           
+            pst.executeUpdate();
+            JOptionPane.showMessageDialog(null, "Updated Successfully");
+        }catch(SQLException | HeadlessException ex) {
+            JOptionPane.showMessageDialog(null, ex);
+        }
+        
+        //Refresh
+        showTableData();
+    }//GEN-LAST:event_Update_ButtonActionPerformed
+
+    public void showTableData()
+    {
+        try{
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/databaseschema_5318", "root", "1234");
+             String sql = "SELECT * FROM `databaseschema_5318`.`customer`";
+             pst = conn.prepareStatement(sql);
+             rs = pst.executeQuery();
+             Customer_Display_Info_Table.setModel(DbUtils.resultSetToTableModel(rs));
+            
+        } catch(Exception ex){
+            JOptionPane.showMessageDialog(null, ex);
+        }
+    }
     /**
      * @param args the command line arguments
      */
@@ -296,7 +354,6 @@ public class Customer_Page extends javax.swing.JFrame {
     private javax.swing.JLabel MiddleName_Label;
     private javax.swing.JTextField MiddleName_Text_Field;
     private javax.swing.JButton Update_Button;
-    private javax.swing.JButton jButton4;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
 }
