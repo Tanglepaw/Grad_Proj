@@ -12,6 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import javax.swing.JOptionPane;
 import net.proteanit.sql.DbUtils;
 
@@ -27,8 +28,8 @@ public class Magazine_Subscription_Page extends javax.swing.JFrame {
     Connection conn = null;
     PreparedStatement pst = null;
     ResultSet rs = null;
-    String Database = "databaseschema_5318";
-    String User = "root";
+    String Database = "Subscriptions";
+    String User = "Admin";
     String Pass = "1234";
     
     public Magazine_Subscription_Page() {
@@ -227,7 +228,7 @@ public class Magazine_Subscription_Page extends javax.swing.JFrame {
         try {
             String PubName = Pname_Text_Field.getText();
             No_Of_Issues = Integer.parseInt(NoOfIssues_Text_Field.getText());
-            String sqlrate = "SELECT Rate FROM publication WHERE Name IN ('" + PubName +  "')" + " AND Type = `Magazine`";
+            String sqlrate = "SELECT Rate FROM Subscriptions.PUBLICATION Where Name IN ('"+PubName+"') AND Type = 'Magazine';";
             pst = conn.prepareStatement(sqlrate);
             rs = pst.executeQuery(sqlrate);  
             
@@ -247,15 +248,40 @@ public class Magazine_Subscription_Page extends javax.swing.JFrame {
     
     public LocalDate calculateDate() throws SQLException
             {
-                LocalDate StartDate = null;
-                StartDate.parse(StartDate_Text_Field.getText());
+                String StartDate = null;
+                StartDate = StartDate_Text_Field.getText();
+                
                 LocalDate EndDate= null;
+                
+                String Freq = null;
                 String PubName = Pname_Text_Field.getText();
-                String sql = "SELECT Rate FROM publication WHERE Name IN ('" + PubName +  "')"; //+ " AND Type = Magazine";
+                
+                int Issues = Integer.parseInt(NoOfIssues_Text_Field.getText());
+                
+                String sql = "SELECT Mfrequency FROM Magazine WHERE Name IN ('" + PubName +  "')"; //+ " AND Type = Magazine";
                 pst = conn.prepareStatement(sql);
                 rs = pst.executeQuery(sql); 
-              
                 
+                while(rs.next())
+                {
+                 Freq = rs.getString("Mfrequency");
+                }
+                
+                if (Freq.equals("Weekly"))
+                {
+                    EndDate = LocalDate.parse(StartDate);
+                    EndDate = EndDate.plusWeeks(1 * Issues);
+                }
+                else if (Freq.equals("Monthly"))
+                {
+                    EndDate = LocalDate.parse(StartDate);
+                    EndDate = EndDate.plusMonths(1 * Issues);
+                }
+                else // Quarterly
+                {
+                    EndDate = LocalDate.parse(StartDate);
+                    EndDate = EndDate.plusMonths(3 * Issues);
+                }
                 
                 return EndDate;
             }
@@ -275,14 +301,22 @@ public class Magazine_Subscription_Page extends javax.swing.JFrame {
             //Price = No of issues * Rate(Dollar amount per item)
             //End_Date = Start Date + No of Issues 
             
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+Database, "root", "1234");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+Database, User, "1234");
             pst = conn.prepareStatement(sql);
             
+            //DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-mm-dd");
             LocalDate EndDate = calculateDate();
-
+            //ED.format(DateTimeFormatter.ofPattern("yyyy-mm-dd"));
+            //String EndDate = ED.format(formatter);
+            
+            
+            
+            System.out.println(EndDate);
+            
             pst.setString(1,CustID_Text_Field.getText());
             pst.setString(2,Pname_Text_Field.getText());
             pst.setString(3,NoOfIssues_Text_Field.getText());
+            //pst.setString(4,EndDate);
             pst.setObject(4,EndDate);
             pst.setString(5,StartDate_Text_Field.getText());
             pst.setInt(6,price);
