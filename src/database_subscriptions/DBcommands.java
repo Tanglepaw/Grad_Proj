@@ -16,8 +16,8 @@ public class DBcommands {
     public Connection getConn()
     {
              Connection conn;    
-             String url = "jdbc:mysql://localhost:3306/databaseschema_5318";
-             String user = "root";
+             String url = "jdbc:mysql://localhost:3306/Subscriptions";
+             String user = "Admin";
              String password = "1234";
          try
          {
@@ -81,17 +81,17 @@ public class DBcommands {
         
     }
     // Select needs to be overloaded in case the where is optional
-    public class select
-    {
-        public String[][] select(String Select, String From, String Where) throws SQLException
+
+        public ResultSet select(String Select, String From, String Where) throws SQLException
         {
             int rowCount = 0;
             int clmCount = 0;
             String [][] result;
+            ResultSet resultSet = null;
             if (Where.isBlank() || Where.isEmpty())
             {
-                result = select(Select,From);
-                return result;
+                resultSet = select(Select,From);
+                return resultSet;
             }
             try (Connection conn = getConn())
             {
@@ -100,7 +100,7 @@ public class DBcommands {
                         + " From "  + From
                         + " Where " + Where;
                 
-                ResultSet resultSet = myStmt.executeQuery(SQL);
+                resultSet = myStmt.executeQuery(SQL);
                 ResultSetMetaData rsmd = resultSet.getMetaData();
                 clmCount = rsmd.getColumnCount();
                 
@@ -122,21 +122,22 @@ public class DBcommands {
                 
             }           
             
-            return result;
+            return resultSet;
         }
         
-        public String[][] select(String Select, String From) throws SQLException
+        public ResultSet select(String Select, String From) throws SQLException
         {
             int rowCount = 0;
             int clmCount = 0;
             String [][] result;
+            ResultSet resultSet;
             try (Connection conn = getConn())
             {
                 Statement myStmt = conn.createStatement();
                 String SQL = "Select " + Select 
                         + " From "  + From;
                 
-                ResultSet resultSet = myStmt.executeQuery(SQL);
+                resultSet = myStmt.executeQuery(SQL);
                 ResultSetMetaData rsmd = resultSet.getMetaData();
                 clmCount = rsmd.getColumnCount();
                 
@@ -158,8 +159,8 @@ public class DBcommands {
                 
             }           
             
-            return result;
+            return resultSet;
         }
-    }
+    
     
 }

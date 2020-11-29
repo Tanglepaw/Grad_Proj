@@ -10,6 +10,8 @@ import java.awt.HeadlessException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.sql.*;
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import net.proteanit.sql.DbUtils;
 
@@ -91,11 +93,11 @@ public class Publication_Page extends javax.swing.JFrame {
         Rate_Text_Field = new javax.swing.JTextField();
         PubNameVar_Label1 = new javax.swing.JLabel();
         PubVar_Text_Field = new javax.swing.JTextField();
-        Frequency_Text_Field = new javax.swing.JTextField();
         Frequency_Label1 = new javax.swing.JLabel();
         Insert_ButtonVar = new javax.swing.JButton();
         Update_ButtonVar = new javax.swing.JButton();
         Delete_ButtonVar = new javax.swing.JButton();
+        FrequencyComBox = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -186,12 +188,6 @@ public class Publication_Page extends javax.swing.JFrame {
 
         PubNameVar_Label1.setText("Publication Name");
 
-        Frequency_Text_Field.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                Frequency_Text_FieldActionPerformed(evt);
-            }
-        });
-
         Frequency_Label1.setText("Frequency");
 
         Insert_ButtonVar.setText("INSERT");
@@ -214,6 +210,8 @@ public class Publication_Page extends javax.swing.JFrame {
                 Delete_ButtonVarActionPerformed(evt);
             }
         });
+
+        FrequencyComBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Weekly", "Monthly", "Quarterly" }));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -248,9 +246,9 @@ public class Publication_Page extends javax.swing.JFrame {
                             .addComponent(Frequency_Label1)
                             .addComponent(PubNameVar_Label1))
                         .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(PubVar_Text_Field, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
-                            .addComponent(Frequency_Text_Field))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(PubVar_Text_Field, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(FrequencyComBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(211, 211, 211))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(Insert_ButtonVar)
@@ -305,13 +303,14 @@ public class Publication_Page extends javax.swing.JFrame {
                             .addComponent(MiddleName_Label)
                             .addComponent(Type_jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(11, 11, 11)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel1)
-                            .addComponent(Rate_Text_Field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(Insert_ButtonVar)
                                 .addComponent(Update_ButtonVar)
-                                .addComponent(Delete_ButtonVar))))
+                                .addComponent(Delete_ButtonVar))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel1)
+                                .addComponent(Rate_Text_Field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(PubNameVar_Label1)
@@ -319,7 +318,7 @@ public class Publication_Page extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(Frequency_Label1)
-                            .addComponent(Frequency_Text_Field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(FrequencyComBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(Insert_Button)
@@ -414,10 +413,6 @@ public class Publication_Page extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_Rate_Text_FieldActionPerformed
 
-    private void Frequency_Text_FieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Frequency_Text_FieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_Frequency_Text_FieldActionPerformed
-
     private void Insert_ButtonVarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Insert_ButtonVarActionPerformed
         // TODO add your handling code here:
         try {
@@ -435,7 +430,7 @@ public class Publication_Page extends javax.swing.JFrame {
             conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+Database, User, Password);
             pst = conn.prepareStatement(sql);
             pst.setString(1,PubVar_Text_Field.getText());
-            pst.setString(2,Frequency_Text_Field.getText());
+            pst.setString(2,(String)FrequencyComBox.getSelectedItem());
             pst.executeUpdate();
             JOptionPane.showMessageDialog(null, "Inserted Successfully");
         }catch(SQLException | HeadlessException ex) {
@@ -460,7 +455,7 @@ public class Publication_Page extends javax.swing.JFrame {
             pst = conn.prepareStatement(sql);
 
             pst.setString(2,PubVar_Text_Field.getText());
-            pst.setString(1,Frequency_Text_Field.getText());
+            pst.setString(1,(String)FrequencyComBox.getSelectedItem());
             pst.executeUpdate();
             JOptionPane.showMessageDialog(null, "Updated Successfully");
         }catch(SQLException | HeadlessException ex) {
@@ -493,6 +488,17 @@ public class Publication_Page extends javax.swing.JFrame {
 
     private void TableControlActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TableControlActionPerformed
         // TODO add your handling code here:
+        //Change frequency combo box depending on magazine or newspaper
+        DefaultComboBoxModel mag = new DefaultComboBoxModel(new String[]{"Weekly", "Monthly", "Quarterly"});
+        DefaultComboBoxModel news = new DefaultComboBoxModel(new String[]{"Daily", "Weekly"});
+        if ("Magazine".equals(TableControl.getSelectedItem()))
+        {
+            FrequencyComBox.setModel(mag);
+        }
+        else
+        {
+            FrequencyComBox.setModel(news);
+        }
         showTableData();
     }//GEN-LAST:event_TableControlActionPerformed
 
@@ -559,8 +565,8 @@ public class Publication_Page extends javax.swing.JFrame {
     private javax.swing.JButton Delete_Button;
     private javax.swing.JButton Delete_ButtonVar;
     private javax.swing.JLabel FirstName_Label;
+    private javax.swing.JComboBox<String> FrequencyComBox;
     private javax.swing.JLabel Frequency_Label1;
-    private javax.swing.JTextField Frequency_Text_Field;
     private javax.swing.JButton Insert_Button;
     private javax.swing.JButton Insert_ButtonVar;
     private javax.swing.JTable MagNews_Table;

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
+<Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="3"/>
   </Properties>
@@ -57,9 +57,9 @@
                           <Component id="PubNameVar_Label1" alignment="1" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="PubVar_Text_Field" alignment="0" pref="150" max="32767" attributes="0"/>
-                          <Component id="Frequency_Text_Field" alignment="0" max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="PubVar_Text_Field" min="-2" pref="150" max="-2" attributes="0"/>
+                          <Component id="FrequencyComBox" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="211" max="-2" attributes="0"/>
                   </Group>
@@ -131,13 +131,15 @@
                           <Component id="Type_jComboBox1" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="11" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="Rate_Text_Field" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Group type="103" alignment="3" groupAlignment="3" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="103" alignment="0" groupAlignment="3" attributes="0">
                               <Component id="Insert_ButtonVar" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="Update_ButtonVar" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="Delete_ButtonVar" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="Rate_Text_Field" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
@@ -149,7 +151,7 @@
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="Frequency_Label1" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="Frequency_Text_Field" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="FrequencyComBox" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
               </Group>
@@ -318,11 +320,6 @@
     </Component>
     <Component class="javax.swing.JTextField" name="PubVar_Text_Field">
     </Component>
-    <Component class="javax.swing.JTextField" name="Frequency_Text_Field">
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="Frequency_Text_FieldActionPerformed"/>
-      </Events>
-    </Component>
     <Component class="javax.swing.JLabel" name="Frequency_Label1">
       <Properties>
         <Property name="text" type="java.lang.String" value="Frequency"/>
@@ -351,6 +348,20 @@
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="Delete_ButtonVarActionPerformed"/>
       </Events>
+    </Component>
+    <Component class="javax.swing.JComboBox" name="FrequencyComBox">
+      <Properties>
+        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+          <StringArray count="3">
+            <StringItem index="0" value="Weekly"/>
+            <StringItem index="1" value="Monthly"/>
+            <StringItem index="2" value="Quarterly"/>
+          </StringArray>
+        </Property>
+      </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+      </AuxValues>
     </Component>
   </SubComponents>
 </Form>
