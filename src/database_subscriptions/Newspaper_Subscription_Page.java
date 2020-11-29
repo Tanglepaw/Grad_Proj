@@ -32,18 +32,18 @@ public class Newspaper_Subscription_Page extends javax.swing.JFrame {
         Update_Button = new javax.swing.JButton();
         CustID_Text_Field = new javax.swing.JTextField();
         Delete_Button = new javax.swing.JButton();
-        FirstName_Label = new javax.swing.JLabel();
-        FirstName_Text_Field = new javax.swing.JTextField();
-        MiddleName_Label = new javax.swing.JLabel();
+        Pname_Text_Field = new javax.swing.JTextField();
+        NoOfMonths = new javax.swing.JLabel();
         MiddleName_Text_Field = new javax.swing.JTextField();
-        LastName_Label = new javax.swing.JLabel();
+        EndDateLabel = new javax.swing.JLabel();
         Customers_Label = new javax.swing.JLabel();
         LastName_Text_Field = new javax.swing.JTextField();
         Customers_Back_Button = new javax.swing.JButton();
         Address_Text_Field = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         Customer_Display_Info_Table = new javax.swing.JTable();
-        Address_Label = new javax.swing.JLabel();
+        StartDateLabel = new javax.swing.JLabel();
+        Pname = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -70,17 +70,15 @@ public class Newspaper_Subscription_Page extends javax.swing.JFrame {
             }
         });
 
-        FirstName_Label.setText("First Name");
-
-        FirstName_Text_Field.addActionListener(new java.awt.event.ActionListener() {
+        Pname_Text_Field.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                FirstName_Text_FieldActionPerformed(evt);
+                Pname_Text_FieldActionPerformed(evt);
             }
         });
 
-        MiddleName_Label.setText("Middle Name");
+        NoOfMonths.setText("Number of Months");
 
-        LastName_Label.setText("Last Name");
+        EndDateLabel.setText("End Date");
 
         Customers_Label.setText("NEWSPAPER SUBSCRIPTION");
 
@@ -99,18 +97,20 @@ public class Newspaper_Subscription_Page extends javax.swing.JFrame {
 
         Customer_Display_Info_Table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "Customer ID", "First Name", "Middle Name", "Last Name", "Address"
+                "Customer ID", "Pub Name", "No Of Months", "End Date", "Start Date", "Price"
             }
         ));
         jScrollPane1.setViewportView(Customer_Display_Info_Table);
 
-        Address_Label.setText("Address");
+        StartDateLabel.setText("Start Date");
+
+        Pname.setText("Publication Name");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -132,17 +132,17 @@ public class Newspaper_Subscription_Page extends javax.swing.JFrame {
                             .addComponent(Customers_Back_Button))
                         .addGap(58, 58, 58))))
             .addGroup(layout.createSequentialGroup()
-                .addGap(76, 76, 76)
+                .addGap(55, 55, 55)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(LastName_Label)
-                    .addComponent(MiddleName_Label)
-                    .addComponent(FirstName_Label)
+                    .addComponent(EndDateLabel)
+                    .addComponent(NoOfMonths)
                     .addComponent(CustID_Label)
-                    .addComponent(Address_Label))
+                    .addComponent(StartDateLabel)
+                    .addComponent(Pname))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(CustID_Text_Field)
-                    .addComponent(FirstName_Text_Field)
+                    .addComponent(Pname_Text_Field)
                     .addComponent(MiddleName_Text_Field)
                     .addComponent(LastName_Text_Field)
                     .addComponent(Address_Text_Field, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE))
@@ -166,23 +166,23 @@ public class Newspaper_Subscription_Page extends javax.swing.JFrame {
                     .addComponent(CustID_Text_Field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(FirstName_Label)
-                    .addComponent(FirstName_Text_Field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(Pname_Text_Field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Pname))
                 .addGap(20, 20, 20)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(MiddleName_Label)
+                    .addComponent(NoOfMonths)
                     .addComponent(MiddleName_Text_Field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(Insert_Button)
                     .addComponent(Update_Button)
                     .addComponent(Delete_Button))
                 .addGap(22, 22, 22)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(LastName_Label)
+                    .addComponent(EndDateLabel)
                     .addComponent(LastName_Text_Field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(26, 26, 26)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(Address_Text_Field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(Address_Label))
+                    .addComponent(StartDateLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 164, Short.MAX_VALUE)
                 .addComponent(Customers_Back_Button)
                 .addGap(51, 51, 51))
@@ -210,10 +210,6 @@ public class Newspaper_Subscription_Page extends javax.swing.JFrame {
 
     }//GEN-LAST:event_Delete_ButtonActionPerformed
 
-    private void FirstName_Text_FieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FirstName_Text_FieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_FirstName_Text_FieldActionPerformed
-
     private void LastName_Text_FieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LastName_Text_FieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_LastName_Text_FieldActionPerformed
@@ -225,6 +221,10 @@ public class Newspaper_Subscription_Page extends javax.swing.JFrame {
         mainMenu.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_Customers_Back_ButtonActionPerformed
+
+    private void Pname_Text_FieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Pname_Text_FieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_Pname_Text_FieldActionPerformed
 
     /**
      * @param args the command line arguments
@@ -262,7 +262,6 @@ public class Newspaper_Subscription_Page extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel Address_Label;
     private javax.swing.JTextField Address_Text_Field;
     private javax.swing.JLabel CustID_Label;
     private javax.swing.JTextField CustID_Text_Field;
@@ -270,13 +269,14 @@ public class Newspaper_Subscription_Page extends javax.swing.JFrame {
     private javax.swing.JButton Customers_Back_Button;
     private javax.swing.JLabel Customers_Label;
     private javax.swing.JButton Delete_Button;
-    private javax.swing.JLabel FirstName_Label;
-    private javax.swing.JTextField FirstName_Text_Field;
+    private javax.swing.JLabel EndDateLabel;
     private javax.swing.JButton Insert_Button;
-    private javax.swing.JLabel LastName_Label;
     private javax.swing.JTextField LastName_Text_Field;
-    private javax.swing.JLabel MiddleName_Label;
     private javax.swing.JTextField MiddleName_Text_Field;
+    private javax.swing.JLabel NoOfMonths;
+    private javax.swing.JLabel Pname;
+    private javax.swing.JTextField Pname_Text_Field;
+    private javax.swing.JLabel StartDateLabel;
     private javax.swing.JButton Update_Button;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables

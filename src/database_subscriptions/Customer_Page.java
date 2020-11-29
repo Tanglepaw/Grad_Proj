@@ -27,8 +27,8 @@ public class Customer_Page extends javax.swing.JFrame {
     Connection conn = null;
     PreparedStatement pst = null;
     ResultSet rs = null; 
-    String Database = "Subscriptions"; //  Subscriptions  databaseschema_5318
-    String User = "Admin"; //   Admin  root
+    String Database = "databaseschema_5318"; //  Subscriptions  databaseschema_5318
+    String User = "root"; //   Admin  root
     String Pass = "1234";
     
     public Customer_Page() {
@@ -85,6 +85,11 @@ public class Customer_Page extends javax.swing.JFrame {
                 "Customer ID", "First Name", "Middle Name", "Last Name", "Address"
             }
         ));
+        Customer_Display_Info_Table.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                Customer_Display_Info_TableMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(Customer_Display_Info_Table);
 
         CustID_Label.setText("Cust ID");
@@ -291,6 +296,27 @@ public class Customer_Page extends javax.swing.JFrame {
         //Refresh
         showTableData();
     }//GEN-LAST:event_Update_ButtonActionPerformed
+
+    private void Customer_Display_Info_TableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Customer_Display_Info_TableMouseClicked
+        // TODO add your handling code here:
+        int row = Customer_Display_Info_Table.getSelectedRow();
+        String selection = Customer_Display_Info_Table.getModel().getValueAt(row, 0).toString();
+        String sql = "Select * From customer WHERE IDnum = " + selection; 
+        try { 
+            pst = conn.prepareStatement(sql);
+            rs = pst.executeQuery();
+            if (rs.next())
+            {
+                CustID_Text_Field.setText(rs.getString("IDnum"));
+                FirstName_Text_Field.setText(rs.getString("Fname"));
+                MiddleName_Text_Field.setText(rs.getString("Minit"));
+                LastName_Text_Field.setText(rs.getString("Lname"));
+                Address_Text_Field.setText(rs.getString("Address"));
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+    }//GEN-LAST:event_Customer_Display_Info_TableMouseClicked
 
     public void showTableData()
     {
