@@ -27,8 +27,8 @@ public class Customer_Page extends javax.swing.JFrame {
     Connection conn = null;
     PreparedStatement pst = null;
     ResultSet rs = null; 
-    String Database = "Subscriptions"; //  Subscriptions  databaseschema_5318
-    String User = "Admin"; //   Admin  root
+    String Database = "databaseschema_5318"; //  Subscriptions  databaseschema_5318
+    String User = "root"; //   Admin  root
     String Pass = "1234";
     
     public Customer_Page() {

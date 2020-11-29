@@ -26,8 +26,8 @@ public class Magazine_Subscription_Page extends javax.swing.JFrame {
     Connection conn = null;
     PreparedStatement pst = null;
     ResultSet rs = null;
-    String Database = "Subscriptions";
-    String User = "Admin";
+    String Database = "databaseschema_5318";
+    String User = "root";
     String Pass = "1234";
     
     public Magazine_Subscription_Page() {
@@ -61,8 +61,6 @@ public class Magazine_Subscription_Page extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         Magazine_Display_Info_Table = new javax.swing.JTable();
         StartDate = new javax.swing.JLabel();
-        Price = new javax.swing.JLabel();
-        Price_Text_Field = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -131,8 +129,6 @@ public class Magazine_Subscription_Page extends javax.swing.JFrame {
 
         StartDate.setText("Start Date");
 
-        Price.setText("Price");
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -146,10 +142,6 @@ public class Magazine_Subscription_Page extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(Subscription_Label)
                         .addGap(556, 556, 556))))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(125, 125, 125)
-                .addComponent(Price)
-                .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -172,8 +164,7 @@ public class Magazine_Subscription_Page extends javax.swing.JFrame {
                                 .addComponent(Pname_Text_Field)
                                 .addComponent(NoOfIssues_Text_Field)
                                 .addComponent(EndDate_Text_Field)
-                                .addComponent(StartDate_Text_Field, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
-                                .addComponent(Price_Text_Field, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE))
+                                .addComponent(StartDate_Text_Field, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE))
                             .addGap(135, 135, 135)
                             .addComponent(Insert_Button)))
                     .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -184,9 +175,7 @@ public class Magazine_Subscription_Page extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(97, 97, 97)
                 .addComponent(Subscription_Label)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 558, Short.MAX_VALUE)
-                .addComponent(Price)
-                .addGap(34, 34, 34)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 606, Short.MAX_VALUE)
                 .addComponent(Subscription_Back_Button)
                 .addGap(49, 49, 49))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -216,9 +205,7 @@ public class Magazine_Subscription_Page extends javax.swing.JFrame {
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(StartDate_Text_Field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(StartDate))
-                    .addGap(26, 26, 26)
-                    .addComponent(Price_Text_Field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(104, Short.MAX_VALUE)))
+                    .addContainerGap(150, Short.MAX_VALUE)))
         );
 
         pack();
@@ -231,18 +218,52 @@ public class Magazine_Subscription_Page extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_Subscription_Back_ButtonActionPerformed
 
-    private void Insert_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Insert_ButtonActionPerformed
+    
+    public int Calculate_Price(){
+        int rate = 0;
+        int price = 0;
+        int No_Of_Issues = 0;
         try {
-            String sql = "INSERT INTO `databaseschema_5318`.`msub` "
-            + "(`IDnum`, `Pname`, `No_Of_Issues`, `End_Date`, `Start_Date`, `Price`)"
+            String PubName = Pname_Text_Field.getText();
+            No_Of_Issues = Integer.parseInt(NoOfIssues_Text_Field.getText());
+            String sqlrate = "SELECT Rate FROM publication WHERE Name IN ('" + PubName +  "')"; //+ " AND Type = Magazine";
+            pst = conn.prepareStatement(sqlrate);
+            rs = pst.executeQuery(sqlrate);  
+            
+            while(rs.next()){
+                rate = rs.getInt("Rate");
+            }
+      
+            price = No_Of_Issues * rate;
+            
+            
+            
+        }catch(SQLException | HeadlessException ex) {
+            JOptionPane.showMessageDialog(null, ex);
+    }
+        return price;
+    }
+    
+    
+    private void Insert_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Insert_ButtonActionPerformed
+
+        
+        
+        try {
+
+            int price = Calculate_Price();
+            
+            String sql = "INSERT INTO msub "
+            + "(`IDnum`, `Pname`, `No_Of_Issues`, `End_Date`, `Start_Date`, `Price`) "
             + "VALUES (?, ?, ?, ?, ?, ?)";
 
             //Price = No of issues * Rate(Dollar amount per item)
             //End_Date = Start Date + No of Issues 
             
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+Database, User, Pass);
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/databaseschema_5318", "root", "1234");
             pst = conn.prepareStatement(sql);
             
+        /*
             
             int No_Of_Issues = Integer.parseInt(NoOfIssues_Text_Field.getText());
             String Pname = Pname_Text_Field.getText();
@@ -254,17 +275,14 @@ public class Magazine_Subscription_Page extends javax.swing.JFrame {
             float rate = (rs.getFloat(0));
             
             float Price = No_Of_Issues * rate;
-            
-         
-            
-            
-          
+        */    
+
             pst.setString(1,CustID_Text_Field.getText());
             pst.setString(2,Pname_Text_Field.getText());
             pst.setString(3,NoOfIssues_Text_Field.getText());
             pst.setString(4,EndDate_Text_Field.getText());
             pst.setString(5,StartDate_Text_Field.getText());
-            pst.setFloat(6, Price);
+            pst.setInt(6,price);
             pst.executeUpdate();
             JOptionPane.showMessageDialog(null, "Inserted Successfully");
         }catch(SQLException | HeadlessException ex) {
@@ -272,16 +290,56 @@ public class Magazine_Subscription_Page extends javax.swing.JFrame {
         }
         //Refresh DB
         showTableData();
+       
     }//GEN-LAST:event_Insert_ButtonActionPerformed
 
     private void Update_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Update_ButtonActionPerformed
         // TODO add your handling code here:
+            try {
+            
+            int price = Calculate_Price();
+                
+            String sql = "UPDATE msub SET No_Of_Issues=?, Start_Date=?, Price=? WHERE IDnum=? AND Pname=?";
+       
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+Database, User, Pass);
+            pst = conn.prepareStatement(sql);
+            
+            pst.setString(4,CustID_Text_Field.getText());
+            pst.setString(5,Pname_Text_Field.getText());
+            pst.setString(1,NoOfIssues_Text_Field.getText());
+            pst.setString(2,StartDate_Text_Field.getText());
+            pst.setInt(3,price);
+
+           
+            pst.executeUpdate();
+            JOptionPane.showMessageDialog(null, "Updated Successfully");
+        }catch(SQLException | HeadlessException ex) {
+            JOptionPane.showMessageDialog(null, ex);
+        }
+        
+        //Refresh
+        showTableData();
   
     }//GEN-LAST:event_Update_ButtonActionPerformed
 
     private void Delete_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Delete_ButtonActionPerformed
         // TODO add your handling code here:
-
+            try {
+            String sql = "DELETE FROM msub WHERE IDnum =? AND Pname=?";
+ 
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+Database, User, Pass);
+            pst = conn.prepareStatement(sql);
+            pst.setString(1,CustID_Text_Field.getText());
+            pst.setString(2,Pname_Text_Field.getText());
+            pst.executeUpdate();
+            JOptionPane.showMessageDialog(null, "Deleted Successfully");
+        }catch(SQLException | HeadlessException ex) {
+            JOptionPane.showMessageDialog(null, ex);
+        }
+         
+        //Refresh
+        showTableData();
+                
 
     }//GEN-LAST:event_Delete_ButtonActionPerformed
 
@@ -355,8 +413,6 @@ public class Magazine_Subscription_Page extends javax.swing.JFrame {
     private javax.swing.JTextField NoOfIssues_Text_Field;
     private javax.swing.JLabel Pname;
     private javax.swing.JTextField Pname_Text_Field;
-    private javax.swing.JLabel Price;
-    private javax.swing.JTextField Price_Text_Field;
     private javax.swing.JLabel StartDate;
     private javax.swing.JTextField StartDate_Text_Field;
     private javax.swing.JButton Subscription_Back_Button;

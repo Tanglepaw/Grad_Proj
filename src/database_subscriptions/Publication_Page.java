@@ -317,7 +317,7 @@ public class Publication_Page extends javax.swing.JFrame {
 
         // TODO add your handling code here:
         try {
-            String sql = "INSERT INTO `" + Database +"`.`PUBLICATION` "
+            String sql = "INSERT INTO `" + Database +"`.`publication` "
             + "(Name, Address, Type, Rate) "
             + "VALUES (?, ?, ?, ?)";
 
