@@ -45,18 +45,18 @@
               </Group>
           </Group>
           <Group type="102" alignment="0" attributes="0">
-              <EmptySpace min="-2" pref="76" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="55" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="1" attributes="0">
-                  <Component id="LastName_Label" alignment="1" min="-2" max="-2" attributes="0"/>
-                  <Component id="MiddleName_Label" alignment="1" min="-2" max="-2" attributes="0"/>
-                  <Component id="FirstName_Label" alignment="1" min="-2" max="-2" attributes="0"/>
+                  <Component id="EndDateLabel" alignment="1" min="-2" max="-2" attributes="0"/>
+                  <Component id="NoOfMonths" alignment="1" min="-2" max="-2" attributes="0"/>
                   <Component id="CustID_Label" alignment="1" min="-2" max="-2" attributes="0"/>
-                  <Component id="Address_Label" alignment="1" min="-2" max="-2" attributes="0"/>
+                  <Component id="StartDateLabel" alignment="1" min="-2" max="-2" attributes="0"/>
+                  <Component id="Pname" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                   <Component id="CustID_Text_Field" alignment="0" max="32767" attributes="0"/>
-                  <Component id="FirstName_Text_Field" alignment="0" max="32767" attributes="0"/>
+                  <Component id="Pname_Text_Field" alignment="0" max="32767" attributes="0"/>
                   <Component id="MiddleName_Text_Field" alignment="0" max="32767" attributes="0"/>
                   <Component id="LastName_Text_Field" alignment="0" max="32767" attributes="0"/>
                   <Component id="Address_Text_Field" alignment="0" pref="150" max="32767" attributes="0"/>
@@ -85,12 +85,12 @@
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="FirstName_Label" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="FirstName_Text_Field" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="Pname_Text_Field" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="Pname" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="MiddleName_Label" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="NoOfMonths" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="MiddleName_Text_Field" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="Insert_Button" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="Update_Button" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -98,13 +98,13 @@
               </Group>
               <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="LastName_Label" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="EndDateLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="LastName_Text_Field" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="Address_Text_Field" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="Address_Label" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="StartDateLabel" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace pref="164" max="32767" attributes="0"/>
               <Component id="Customers_Back_Button" min="-2" max="-2" attributes="0"/>
@@ -145,26 +145,21 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="Delete_ButtonActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JLabel" name="FirstName_Label">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="First Name"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JTextField" name="FirstName_Text_Field">
+    <Component class="javax.swing.JTextField" name="Pname_Text_Field">
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="FirstName_Text_FieldActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="Pname_Text_FieldActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JLabel" name="MiddleName_Label">
+    <Component class="javax.swing.JLabel" name="NoOfMonths">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Middle Name"/>
+        <Property name="text" type="java.lang.String" value="Number of Months"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="MiddleName_Text_Field">
     </Component>
-    <Component class="javax.swing.JLabel" name="LastName_Label">
+    <Component class="javax.swing.JLabel" name="EndDateLabel">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Last Name"/>
+        <Property name="text" type="java.lang.String" value="End Date"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="Customers_Label">
@@ -197,13 +192,48 @@
         <Component class="javax.swing.JTable" name="Customer_Display_Info_Table">
           <Properties>
             <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-              <Table columnCount="5" rowCount="4">
+              <Table columnCount="6" rowCount="4">
                 <Column editable="true" title="Customer ID" type="java.lang.Object"/>
-                <Column editable="true" title="First Name" type="java.lang.Object"/>
-                <Column editable="true" title="Middle Name" type="java.lang.Object"/>
-                <Column editable="true" title="Last Name" type="java.lang.Object"/>
-                <Column editable="true" title="Address" type="java.lang.Object"/>
+                <Column editable="true" title="Pub Name" type="java.lang.Object"/>
+                <Column editable="true" title="No Of Months" type="java.lang.Object"/>
+                <Column editable="true" title="End Date" type="java.lang.Object"/>
+                <Column editable="true" title="Start Date" type="java.lang.Object"/>
+                <Column editable="true" title="Price" type="java.lang.Object"/>
               </Table>
+            </Property>
+            <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
+              <TableColumnModel selectionModel="0">
+                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                  <Title/>
+                  <Editor/>
+                  <Renderer/>
+                </Column>
+                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                  <Title/>
+                  <Editor/>
+                  <Renderer/>
+                </Column>
+                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                  <Title/>
+                  <Editor/>
+                  <Renderer/>
+                </Column>
+                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                  <Title/>
+                  <Editor/>
+                  <Renderer/>
+                </Column>
+                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                  <Title/>
+                  <Editor/>
+                  <Renderer/>
+                </Column>
+                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                  <Title/>
+                  <Editor/>
+                  <Renderer/>
+                </Column>
+              </TableColumnModel>
             </Property>
             <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
               <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
@@ -212,9 +242,14 @@
         </Component>
       </SubComponents>
     </Container>
-    <Component class="javax.swing.JLabel" name="Address_Label">
+    <Component class="javax.swing.JLabel" name="StartDateLabel">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Address"/>
+        <Property name="text" type="java.lang.String" value="Start Date"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="Pname">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Publication Name"/>
       </Properties>
     </Component>
   </SubComponents>
