@@ -11,6 +11,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import javax.swing.JOptionPane;
 import net.proteanit.sql.DbUtils;
 
@@ -226,7 +227,7 @@ public class Magazine_Subscription_Page extends javax.swing.JFrame {
         try {
             String PubName = Pname_Text_Field.getText();
             No_Of_Issues = Integer.parseInt(NoOfIssues_Text_Field.getText());
-            String sqlrate = "SELECT Rate FROM publication WHERE Name IN ('" + PubName +  "')"; //+ " AND Type = Magazine";
+            String sqlrate = "SELECT Rate FROM publication WHERE Name IN ('" + PubName +  "')" + " AND Type = `Magazine`";
             pst = conn.prepareStatement(sqlrate);
             rs = pst.executeQuery(sqlrate);  
             
@@ -244,6 +245,20 @@ public class Magazine_Subscription_Page extends javax.swing.JFrame {
         return price;
     }
     
+    public LocalDate calculateDate() throws SQLException
+            {
+                LocalDate StartDate = null;
+                StartDate.parse(StartDate_Text_Field.getText());
+                LocalDate EndDate= null;
+                String PubName = Pname_Text_Field.getText();
+                String sql = "SELECT Rate FROM publication WHERE Name IN ('" + PubName +  "')"; //+ " AND Type = Magazine";
+                pst = conn.prepareStatement(sql);
+                rs = pst.executeQuery(sql); 
+              
+                
+                
+                return EndDate;
+            }
     
     private void Insert_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Insert_ButtonActionPerformed
 
@@ -260,27 +275,15 @@ public class Magazine_Subscription_Page extends javax.swing.JFrame {
             //Price = No of issues * Rate(Dollar amount per item)
             //End_Date = Start Date + No of Issues 
             
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/databaseschema_5318", "root", "1234");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+Database, "root", "1234");
             pst = conn.prepareStatement(sql);
             
-        /*
-            
-            int No_Of_Issues = Integer.parseInt(NoOfIssues_Text_Field.getText());
-            String Pname = Pname_Text_Field.getText();
-           
-            String sqlrate = "SELECT Rate FROM `databaseschema_5318`.`publication` WHERE Name = " + Pname + " AND Type = Magazine";
-            pst = conn.prepareStatement(sqlrate);
-            rs = pst.executeQuery();  
-            
-            float rate = (rs.getFloat(0));
-            
-            float Price = No_Of_Issues * rate;
-        */    
+            LocalDate EndDate = calculateDate();
 
             pst.setString(1,CustID_Text_Field.getText());
             pst.setString(2,Pname_Text_Field.getText());
             pst.setString(3,NoOfIssues_Text_Field.getText());
-            pst.setString(4,EndDate_Text_Field.getText());
+            pst.setObject(4,EndDate);
             pst.setString(5,StartDate_Text_Field.getText());
             pst.setInt(6,price);
             pst.executeUpdate();
@@ -358,7 +361,7 @@ public class Magazine_Subscription_Page extends javax.swing.JFrame {
     {
         try{
             conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+Database, User, Pass);
-             String sql = "SELECT * FROM `databaseschema_5318`.`msub`";
+             String sql = "SELECT * FROM `"+Database+"`.`msub`";
              pst = conn.prepareStatement(sql);
              rs = pst.executeQuery();
              Magazine_Display_Info_Table.setModel(DbUtils.resultSetToTableModel(rs));
@@ -420,4 +423,8 @@ public class Magazine_Subscription_Page extends javax.swing.JFrame {
     private javax.swing.JButton Update_Button;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
+
+    private void Switch(LocalDate StartDate) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }
