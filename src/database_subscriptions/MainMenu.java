@@ -7,6 +7,7 @@ package database_subscriptions;
 
 import database_subscriptions.Customer_Page;
 import database_subscriptions.Subscription_Page;
+import java.sql.*;
 
 /**
  *
@@ -109,6 +110,20 @@ public class MainMenu extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
+        
+        Connection conn = null;
+        
+        try {
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/databaseschema_5318", "root", "1234");
+            if (conn != null)
+            {
+                System.out.println("Connected to Database Successfully");
+            }
+        }catch(Exception e)
+        {
+            System.out.println("not connected to database.");
+           
+        }
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.

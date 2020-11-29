@@ -5,6 +5,13 @@
  */
 package database_subscriptions;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author Em-kun
@@ -14,6 +21,10 @@ public class Customer_Page extends javax.swing.JFrame {
     /**
      * Creates new form Customer_Page
      */
+    Connection conn = null;
+    PreparedStatement pst = null;
+    ResultSet rs = null; 
+    
     public Customer_Page() {
         initComponents();
     }
@@ -30,7 +41,21 @@ public class Customer_Page extends javax.swing.JFrame {
         Customers_Label = new javax.swing.JLabel();
         Customers_Back_Button = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        Customer_Display_Info_Table = new javax.swing.JTable();
+        CustID_Label = new javax.swing.JLabel();
+        CustID_Text_Field = new javax.swing.JTextField();
+        FirstName_Label = new javax.swing.JLabel();
+        FirstName_Text_Field = new javax.swing.JTextField();
+        MiddleName_Label = new javax.swing.JLabel();
+        MiddleName_Text_Field = new javax.swing.JTextField();
+        LastName_Label = new javax.swing.JLabel();
+        LastName_Text_Field = new javax.swing.JTextField();
+        Address_Text_Field = new javax.swing.JTextField();
+        Address_Label = new javax.swing.JLabel();
+        Insert_Button = new javax.swing.JButton();
+        Update_Button = new javax.swing.JButton();
+        Delete_Button = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -43,18 +68,53 @@ public class Customer_Page extends javax.swing.JFrame {
             }
         });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        Customer_Display_Info_Table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Customer ID", "First Name", "Middle Name", "Last Name", "Address"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(Customer_Display_Info_Table);
+
+        CustID_Label.setText("Cust ID");
+
+        FirstName_Label.setText("First Name");
+
+        FirstName_Text_Field.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                FirstName_Text_FieldActionPerformed(evt);
+            }
+        });
+
+        MiddleName_Label.setText("Middle Name");
+
+        LastName_Label.setText("Last Name");
+
+        LastName_Text_Field.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                LastName_Text_FieldActionPerformed(evt);
+            }
+        });
+
+        Address_Label.setText("Address");
+
+        Insert_Button.setText("INSERT");
+        Insert_Button.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Insert_ButtonActionPerformed(evt);
+            }
+        });
+
+        Update_Button.setText("UPDATE");
+
+        Delete_Button.setText("DELETE");
+
+        jButton4.setText("jButton4");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -67,20 +127,70 @@ public class Customer_Page extends javax.swing.JFrame {
                         .addComponent(Customers_Label)
                         .addGap(583, 583, 583))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(Customers_Back_Button)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(Update_Button)
+                                .addGap(130, 130, 130)
+                                .addComponent(Delete_Button)
+                                .addGap(131, 131, 131)
+                                .addComponent(jButton4)
+                                .addGap(67, 67, 67))
+                            .addComponent(Customers_Back_Button))
                         .addGap(58, 58, 58))))
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jScrollPane1)
-                .addContainerGap())
+                .addGap(76, 76, 76)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(LastName_Label)
+                    .addComponent(MiddleName_Label)
+                    .addComponent(FirstName_Label)
+                    .addComponent(CustID_Label)
+                    .addComponent(Address_Label))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(CustID_Text_Field)
+                    .addComponent(FirstName_Text_Field)
+                    .addComponent(MiddleName_Text_Field)
+                    .addComponent(LastName_Text_Field)
+                    .addComponent(Address_Text_Field, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE))
+                .addGap(135, 135, 135)
+                .addComponent(Insert_Button)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(129, 129, 129)
                 .addComponent(Customers_Label)
-                .addGap(56, 56, 56)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 391, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 129, Short.MAX_VALUE)
+                .addGap(38, 38, 38)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 299, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(CustID_Label)
+                    .addComponent(CustID_Text_Field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(FirstName_Label)
+                    .addComponent(FirstName_Text_Field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(20, 20, 20)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(MiddleName_Label)
+                    .addComponent(MiddleName_Text_Field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Insert_Button)
+                    .addComponent(Update_Button)
+                    .addComponent(Delete_Button)
+                    .addComponent(jButton4))
+                .addGap(22, 22, 22)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(LastName_Label)
+                    .addComponent(LastName_Text_Field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(26, 26, 26)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(Address_Text_Field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Address_Label))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
                 .addComponent(Customers_Back_Button)
                 .addGap(51, 51, 51))
         );
@@ -95,6 +205,44 @@ public class Customer_Page extends javax.swing.JFrame {
         mainMenu.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_Customers_Back_ButtonActionPerformed
+
+    private void FirstName_Text_FieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FirstName_Text_FieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_FirstName_Text_FieldActionPerformed
+
+    private void LastName_Text_FieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LastName_Text_FieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_LastName_Text_FieldActionPerformed
+
+    private void Insert_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Insert_ButtonActionPerformed
+        try {
+            // TODO add your handling code here:
+            /*     try {
+            String sql = "INSERT INTO `databaseschema_5318`.`customer` "
+            + "(`IDnum`, `Fname`, `Lname`, `Address`) "
+            + "VALUES ('?', '?', '?', '?'); ";
+            
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/databaseschema_5318", "root", "1234");
+            
+            */
+            
+            String Table = null;
+            String Attribute = null;
+            String Value = null;
+            
+            Table = "customer";
+            Attribute = "`IDnum`, `Fname`,  `Lname`, `Minit`, `Address`";
+            Value = "'" + CustID_Text_Field.getText() + "' , '" +FirstName_Text_Field.getText() + "' , '" + MiddleName_Text_Field.getText() + "' , '" + LastName_Text_Field.getText() + "' , '" + Address_Text_Field.getText() + "'";
+            
+            DBcommands cmd = new DBcommands();
+            cmd.insert(Table, Attribute, Value);
+        } catch (SQLException ex) {
+            Logger.getLogger(Customer_Page.class.getName()).log(Level.SEVERE, null, ex);
+        }
+             
+   
+   
+    }//GEN-LAST:event_Insert_ButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -132,9 +280,23 @@ public class Customer_Page extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel Address_Label;
+    private javax.swing.JTextField Address_Text_Field;
+    private javax.swing.JLabel CustID_Label;
+    private javax.swing.JTextField CustID_Text_Field;
+    private javax.swing.JTable Customer_Display_Info_Table;
     private javax.swing.JButton Customers_Back_Button;
     private javax.swing.JLabel Customers_Label;
+    private javax.swing.JButton Delete_Button;
+    private javax.swing.JLabel FirstName_Label;
+    private javax.swing.JTextField FirstName_Text_Field;
+    private javax.swing.JButton Insert_Button;
+    private javax.swing.JLabel LastName_Label;
+    private javax.swing.JTextField LastName_Text_Field;
+    private javax.swing.JLabel MiddleName_Label;
+    private javax.swing.JTextField MiddleName_Text_Field;
+    private javax.swing.JButton Update_Button;
+    private javax.swing.JButton jButton4;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
 }

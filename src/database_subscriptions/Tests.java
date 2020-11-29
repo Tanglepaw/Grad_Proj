@@ -9,16 +9,18 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author brendanmcantosh
  */
-public class Tests {
+/*public class Tests {
     
     public static void main(String []args ) throws SQLException
     {
-      /*       
+             
             DBcommands cmd = new DBcommands();
             String Table = "MAGAZINE";
             String Attributes = "Name, Mfrequency";
@@ -30,6 +32,36 @@ public class Tests {
             cmd.update(Table, Set, Whereu);
             cmd.delete(Table, Whered);
       */   
+import java.sql.*;
+import javax.swing.*;
+
+
+
+public class Tests {
+
+    Connection connected = null;
+    
+    public Connection getConn()
+    {
+             Connection conn;    
+             String url = "jdbc:mysql://localhost:3306/databaseschema_5318";
+             String user = "root";
+             String password = "1234";
+         try
+         {
+            conn = DriverManager.getConnection(url,user,password);
+            
+            return conn;
+         }
+         catch(SQLException e)
+                    {
+                        System.out.println("Connection Unsucessful");
+                    }
+         return null;
     }
     
+ 
 }
+    
+    
+
