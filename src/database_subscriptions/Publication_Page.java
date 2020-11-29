@@ -49,7 +49,7 @@ public class Publication_Page extends javax.swing.JFrame {
         Publications_Label = new javax.swing.JLabel();
         Publication_Back_Button = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        Customer_Display_Info_Table = new javax.swing.JTable();
+        Publication_Display_Info_Table = new javax.swing.JTable();
         CustID_Label = new javax.swing.JLabel();
         Pub_Text_Field = new javax.swing.JTextField();
         FirstName_Label = new javax.swing.JLabel();
@@ -83,7 +83,7 @@ public class Publication_Page extends javax.swing.JFrame {
             }
         });
 
-        Customer_Display_Info_Table.setModel(new javax.swing.table.DefaultTableModel(
+        Publication_Display_Info_Table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null},
                 {null, null, null, null, null},
@@ -94,7 +94,12 @@ public class Publication_Page extends javax.swing.JFrame {
                 "Customer ID", "First Name", "Middle Name", "Last Name", "Address"
             }
         ));
-        jScrollPane1.setViewportView(Customer_Display_Info_Table);
+        Publication_Display_Info_Table.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                Publication_Display_Info_TableMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(Publication_Display_Info_Table);
 
         CustID_Label.setText("Publication Name");
 
@@ -475,6 +480,28 @@ public class Publication_Page extends javax.swing.JFrame {
         showTableData();
     }//GEN-LAST:event_TableControlActionPerformed
 
+    private void Publication_Display_Info_TableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Publication_Display_Info_TableMouseClicked
+ /*       // TODO add your handling code here:
+
+        int row = Publication_Display_Info_Table.getSelectedRow();
+        String selection = Publication_Display_Info_Table.getModel().getValueAt(row, 0).toString();
+        String sql = "Select * From publication WHERE Name = " + selection; 
+        try { 
+            pst = conn.prepareStatement(sql);
+            rs = pst.executeQuery();
+            if (rs.next())
+            {
+                Pub_Text_Field.setText(rs.getString("Name"));
+                PubAddress_Text_Field.setText(rs.getString("Address"));
+                Rate_Text_Field.setText(rs.getString("Rate"));
+                
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+*/
+    }//GEN-LAST:event_Publication_Display_Info_TableMouseClicked
+
                                                      
                                            
     public void showTableData()
@@ -484,7 +511,7 @@ public class Publication_Page extends javax.swing.JFrame {
              String sql = "SELECT * FROM `"+ Database + "`.`PUBLICATION`";
              pst = conn.prepareStatement(sql);
              rs = pst.executeQuery();
-             Customer_Display_Info_Table.setModel(DbUtils.resultSetToTableModel(rs));
+             Publication_Display_Info_Table.setModel(DbUtils.resultSetToTableModel(rs));
              
              String Table = (String) TableControl.getSelectedItem();;
              sql = "Select * FROM `" + Database + "`.`" + Table + "`";
@@ -534,7 +561,6 @@ public class Publication_Page extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel CustID_Label;
-    private javax.swing.JTable Customer_Display_Info_Table;
     private javax.swing.JButton Delete_Button;
     private javax.swing.JButton Delete_ButtonVar;
     private javax.swing.JLabel FirstName_Label;
@@ -549,6 +575,7 @@ public class Publication_Page extends javax.swing.JFrame {
     private javax.swing.JTextField PubVar_Text_Field;
     private javax.swing.JTextField Pub_Text_Field;
     private javax.swing.JButton Publication_Back_Button;
+    private javax.swing.JTable Publication_Display_Info_Table;
     private javax.swing.JLabel Publications_Label;
     private javax.swing.JTextField Rate_Text_Field;
     private javax.swing.JComboBox<String> TableControl;
