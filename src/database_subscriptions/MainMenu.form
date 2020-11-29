@@ -24,13 +24,15 @@
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
-              <EmptySpace min="-2" pref="154" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
               <Component id="Customers_Page" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="237" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="309" max="-2" attributes="0"/>
               <Component id="Publication_Page" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="293" max="-2" attributes="0"/>
-              <Component id="Subscription_Page" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="205" max="32767" attributes="0"/>
+              <EmptySpace pref="200" max="32767" attributes="0"/>
+              <Component id="Magazine_Subscription_Page" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="145" max="-2" attributes="0"/>
+              <Component id="Newspaper_Subscription_Page" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -41,7 +43,8 @@
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="Customers_Page" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="Publication_Page" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="Subscription_Page" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="Magazine_Subscription_Page" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="Newspaper_Subscription_Page" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="388" max="-2" attributes="0"/>
           </Group>
@@ -65,12 +68,20 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="Publication_PageActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JButton" name="Subscription_Page">
+    <Component class="javax.swing.JButton" name="Magazine_Subscription_Page">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Subscription Info"/>
+        <Property name="text" type="java.lang.String" value="Magazine Subcription Info"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="Subscription_PageActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="Magazine_Subscription_PageActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="Newspaper_Subscription_Page">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Newspaper Subscription Info"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="Newspaper_Subscription_PageActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>

@@ -6,7 +6,7 @@
 package database_subscriptions;
 
 import database_subscriptions.Customer_Page;
-import database_subscriptions.Subscription_Page;
+import database_subscriptions.Magazine_Subscription_Page;
 import java.sql.*;
 
 /**
@@ -33,7 +33,8 @@ public class MainMenu extends javax.swing.JFrame {
 
         Customers_Page = new javax.swing.JButton();
         Publication_Page = new javax.swing.JButton();
-        Subscription_Page = new javax.swing.JButton();
+        Magazine_Subscription_Page = new javax.swing.JButton();
+        Newspaper_Subscription_Page = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -51,10 +52,17 @@ public class MainMenu extends javax.swing.JFrame {
             }
         });
 
-        Subscription_Page.setText("Subscription Info");
-        Subscription_Page.addActionListener(new java.awt.event.ActionListener() {
+        Magazine_Subscription_Page.setText("Magazine Subcription Info");
+        Magazine_Subscription_Page.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                Subscription_PageActionPerformed(evt);
+                Magazine_Subscription_PageActionPerformed(evt);
+            }
+        });
+
+        Newspaper_Subscription_Page.setText("Newspaper Subscription Info");
+        Newspaper_Subscription_Page.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Newspaper_Subscription_PageActionPerformed(evt);
             }
         });
 
@@ -63,13 +71,15 @@ public class MainMenu extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(154, 154, 154)
+                .addContainerGap()
                 .addComponent(Customers_Page)
-                .addGap(237, 237, 237)
+                .addGap(309, 309, 309)
                 .addComponent(Publication_Page)
-                .addGap(293, 293, 293)
-                .addComponent(Subscription_Page)
-                .addContainerGap(205, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 200, Short.MAX_VALUE)
+                .addComponent(Magazine_Subscription_Page)
+                .addGap(145, 145, 145)
+                .addComponent(Newspaper_Subscription_Page)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -78,7 +88,8 @@ public class MainMenu extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(Customers_Page)
                     .addComponent(Publication_Page)
-                    .addComponent(Subscription_Page))
+                    .addComponent(Magazine_Subscription_Page)
+                    .addComponent(Newspaper_Subscription_Page))
                 .addGap(388, 388, 388))
         );
 
@@ -99,12 +110,19 @@ public class MainMenu extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_Publication_PageActionPerformed
 
-    private void Subscription_PageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Subscription_PageActionPerformed
+    private void Magazine_Subscription_PageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Magazine_Subscription_PageActionPerformed
         // TODO add your handling code here:
-        Subscription_Page subscription_Page = new Subscription_Page();
-        subscription_Page.setVisible(true);
+        Magazine_Subscription_Page Magazine_subscription_Page = new Magazine_Subscription_Page();
+        Magazine_subscription_Page.setVisible(true);
         this.dispose();
-    }//GEN-LAST:event_Subscription_PageActionPerformed
+    }//GEN-LAST:event_Magazine_Subscription_PageActionPerformed
+
+    private void Newspaper_Subscription_PageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Newspaper_Subscription_PageActionPerformed
+        // TODO add your handling code here:
+        Newspaper_Subscription_Page NewspaperSubpage = new Newspaper_Subscription_Page();
+        NewspaperSubpage.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_Newspaper_Subscription_PageActionPerformed
 
     /**
      * @param args the command line arguments
@@ -157,7 +175,8 @@ public class MainMenu extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Customers_Page;
+    private javax.swing.JButton Magazine_Subscription_Page;
+    private javax.swing.JButton Newspaper_Subscription_Page;
     private javax.swing.JButton Publication_Page;
-    private javax.swing.JButton Subscription_Page;
     // End of variables declaration//GEN-END:variables
 }
