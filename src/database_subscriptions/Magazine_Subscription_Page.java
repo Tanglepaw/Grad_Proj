@@ -228,7 +228,7 @@ public class Magazine_Subscription_Page extends javax.swing.JFrame {
         try {
             String PubName = Pname_Text_Field.getText();
             No_Of_Issues = Integer.parseInt(NoOfIssues_Text_Field.getText());
-            String sqlrate = "SELECT Rate FROM Subscriptions.PUBLICATION Where Name IN ('"+PubName+"') AND Type = 'Magazine';";
+            String sqlrate = "SELECT Rate FROM "+Database+".PUBLICATION Where Name IN ('"+PubName+"') AND Type = 'Magazine';";
             pst = conn.prepareStatement(sqlrate);
             rs = pst.executeQuery(sqlrate);  
             
@@ -249,7 +249,8 @@ public class Magazine_Subscription_Page extends javax.swing.JFrame {
     public LocalDate calculateDate() throws SQLException
             {
                 String StartDate = null;
-                StartDate = StartDate_Text_Field.getText();
+               StartDate = StartDate_Text_Field.getText();
+               //StartDate = "2020-02-2";
                 
                 LocalDate EndDate= null;
                 
@@ -261,6 +262,8 @@ public class Magazine_Subscription_Page extends javax.swing.JFrame {
                 String sql = "SELECT Mfrequency FROM Magazine WHERE Name IN ('" + PubName +  "')"; //+ " AND Type = Magazine";
                 pst = conn.prepareStatement(sql);
                 rs = pst.executeQuery(sql); 
+                
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-mm-dd"); 
                 
                 while(rs.next())
                 {
@@ -274,12 +277,12 @@ public class Magazine_Subscription_Page extends javax.swing.JFrame {
                 }
                 else if (Freq.equals("Monthly"))
                 {
-                    EndDate = LocalDate.parse(StartDate);
+                    EndDate = LocalDate.parse(StartDate, formatter);
                     EndDate = EndDate.plusMonths(1 * Issues);
                 }
                 else // Quarterly
                 {
-                    EndDate = LocalDate.parse(StartDate);
+                    EndDate = EndDate.parse(StartDate, formatter);
                     EndDate = EndDate.plusMonths(3 * Issues);
                 }
                 
@@ -294,30 +297,38 @@ public class Magazine_Subscription_Page extends javax.swing.JFrame {
 
             int price = Calculate_Price();
             
-            String sql = "INSERT INTO msub "
-            + "(`IDnum`, `Pname`, `No_Of_Issues`, `End_Date`, `Start_Date`, `Price`) "
-            + "VALUES (?, ?, ?, ?, ?, ?)";
+            
 
             //Price = No of issues * Rate(Dollar amount per item)
             //End_Date = Start Date + No of Issues 
             
             conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+Database, User, "1234");
+            
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LocalDate ED = calculateDate();
+            ED.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            String EndDate = ED.toString(); 
+            EndDate = "" + EndDate +"";
+            //java.sql.Date EndDate = java.sql.Date.valueOf(ED);
+            
+            String sql = "INSERT INTO msub "
+            + "(`IDnum`, `Pname`, `No_Of_Issues`, `End_Date`, `Start_Date`, `Price`) "
+            + "VALUES (?, ?, ?, ?, ?, ?)";
+            
             pst = conn.prepareStatement(sql);
             
-            //DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-mm-dd");
-            LocalDate EndDate = calculateDate();
-            //ED.format(DateTimeFormatter.ofPattern("yyyy-mm-dd"));
-            //String EndDate = ED.format(formatter);
-            
-            
-            
             System.out.println(EndDate);
-            
-            pst.setString(1,CustID_Text_Field.getText());
+            System.out.println(CustID_Text_Field.getText());
+            System.out.println(Pname_Text_Field.getText());
+            System.out.println(NoOfIssues_Text_Field.getText());
+            System.out.println(EndDate_Text_Field.getText());
+            System.out.println(StartDate_Text_Field.getText());
+            System.out.println(price);
+            pst.setString(1,CustID_Text_Field.getText()); 
             pst.setString(2,Pname_Text_Field.getText());
             pst.setString(3,NoOfIssues_Text_Field.getText());
-            //pst.setString(4,EndDate);
-            pst.setObject(4,EndDate);
+            pst.setString(4,EndDate);
+            //pst.setString(4,EndDate_Text_Field.getText());
             pst.setString(5,StartDate_Text_Field.getText());
             pst.setInt(6,price);
             pst.executeUpdate();
@@ -330,6 +341,7 @@ public class Magazine_Subscription_Page extends javax.swing.JFrame {
        
     }//GEN-LAST:event_Insert_ButtonActionPerformed
 
+    
     private void Update_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Update_ButtonActionPerformed
         // TODO add your handling code here:
             try {
