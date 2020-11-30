@@ -57,9 +57,9 @@
               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                   <Component id="CustID_Text_Field" alignment="0" max="32767" attributes="0"/>
                   <Component id="Pname_Text_Field" alignment="0" max="32767" attributes="0"/>
-                  <Component id="MiddleName_Text_Field" alignment="0" max="32767" attributes="0"/>
-                  <Component id="LastName_Text_Field" alignment="0" max="32767" attributes="0"/>
-                  <Component id="Address_Text_Field" alignment="0" pref="150" max="32767" attributes="0"/>
+                  <Component id="NoOfMonths_TextField" alignment="0" max="32767" attributes="0"/>
+                  <Component id="EndDate_TextField" alignment="0" max="32767" attributes="0"/>
+                  <Component id="Start_Date_TextField" alignment="0" pref="150" max="32767" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="135" max="-2" attributes="0"/>
               <Component id="Insert_Button" min="-2" max="-2" attributes="0"/>
@@ -91,7 +91,7 @@
               <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="NoOfMonths" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="MiddleName_Text_Field" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="NoOfMonths_TextField" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="Insert_Button" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="Update_Button" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="Delete_Button" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -99,11 +99,11 @@
               <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="EndDateLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="LastName_Text_Field" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="EndDate_TextField" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="Address_Text_Field" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="Start_Date_TextField" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="StartDateLabel" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace pref="164" max="32767" attributes="0"/>
@@ -155,7 +155,7 @@
         <Property name="text" type="java.lang.String" value="Number of Months"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="MiddleName_Text_Field">
+    <Component class="javax.swing.JTextField" name="NoOfMonths_TextField">
     </Component>
     <Component class="javax.swing.JLabel" name="EndDateLabel">
       <Properties>
@@ -167,9 +167,9 @@
         <Property name="text" type="java.lang.String" value="NEWSPAPER SUBSCRIPTION"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="LastName_Text_Field">
+    <Component class="javax.swing.JTextField" name="EndDate_TextField">
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="LastName_Text_FieldActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="EndDate_TextFieldActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JButton" name="Customers_Back_Button">
@@ -180,7 +180,7 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="Customers_Back_ButtonActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JTextField" name="Address_Text_Field">
+    <Component class="javax.swing.JTextField" name="Start_Date_TextField">
     </Component>
     <Container class="javax.swing.JScrollPane" name="jScrollPane1">
       <AuxValues>
@@ -189,7 +189,7 @@
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
       <SubComponents>
-        <Component class="javax.swing.JTable" name="Customer_Display_Info_Table">
+        <Component class="javax.swing.JTable" name="Newspaper_Display_Info_Table">
           <Properties>
             <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
               <Table columnCount="6" rowCount="4">
@@ -239,6 +239,9 @@
               <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="Newspaper_Display_Info_TableMouseClicked"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

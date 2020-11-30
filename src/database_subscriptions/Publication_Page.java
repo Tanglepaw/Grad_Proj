@@ -28,8 +28,8 @@ public class Publication_Page extends javax.swing.JFrame {
     Connection conn = null;
     PreparedStatement pst = null;
     ResultSet rs = null; 
-    String Database = "Subscriptions";
-    String User = "Admin";
+    String Database = "databaseschema_5318";
+    String User = "root";
     String Password = "1234";
     
     public Publication_Page() {

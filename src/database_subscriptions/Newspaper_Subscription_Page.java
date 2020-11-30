@@ -5,6 +5,16 @@
  */
 package database_subscriptions;
 
+import java.awt.HeadlessException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.LocalDate;
+import javax.swing.JOptionPane;
+import net.proteanit.sql.DbUtils;
+
 /**
  *
  * @author Em-kun
@@ -14,8 +24,16 @@ public class Newspaper_Subscription_Page extends javax.swing.JFrame {
     /**
      * Creates new form Newspaper_Subscription_Page
      */
+    Connection conn = null;
+    PreparedStatement pst = null;
+    ResultSet rs = null;
+    String Database = "databaseschema_5318";
+    String User = "root";
+    String Pass = "1234";
+    
     public Newspaper_Subscription_Page() {
         initComponents();
+        showTableData();
     }
 
     /**
@@ -34,14 +52,14 @@ public class Newspaper_Subscription_Page extends javax.swing.JFrame {
         Delete_Button = new javax.swing.JButton();
         Pname_Text_Field = new javax.swing.JTextField();
         NoOfMonths = new javax.swing.JLabel();
-        MiddleName_Text_Field = new javax.swing.JTextField();
+        NoOfMonths_TextField = new javax.swing.JTextField();
         EndDateLabel = new javax.swing.JLabel();
         Customers_Label = new javax.swing.JLabel();
-        LastName_Text_Field = new javax.swing.JTextField();
+        EndDate_TextField = new javax.swing.JTextField();
         Customers_Back_Button = new javax.swing.JButton();
-        Address_Text_Field = new javax.swing.JTextField();
+        Start_Date_TextField = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        Customer_Display_Info_Table = new javax.swing.JTable();
+        Newspaper_Display_Info_Table = new javax.swing.JTable();
         StartDateLabel = new javax.swing.JLabel();
         Pname = new javax.swing.JLabel();
 
@@ -82,9 +100,9 @@ public class Newspaper_Subscription_Page extends javax.swing.JFrame {
 
         Customers_Label.setText("NEWSPAPER SUBSCRIPTION");
 
-        LastName_Text_Field.addActionListener(new java.awt.event.ActionListener() {
+        EndDate_TextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                LastName_Text_FieldActionPerformed(evt);
+                EndDate_TextFieldActionPerformed(evt);
             }
         });
 
@@ -95,7 +113,7 @@ public class Newspaper_Subscription_Page extends javax.swing.JFrame {
             }
         });
 
-        Customer_Display_Info_Table.setModel(new javax.swing.table.DefaultTableModel(
+        Newspaper_Display_Info_Table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null},
                 {null, null, null, null, null, null},
@@ -106,7 +124,12 @@ public class Newspaper_Subscription_Page extends javax.swing.JFrame {
                 "Customer ID", "Pub Name", "No Of Months", "End Date", "Start Date", "Price"
             }
         ));
-        jScrollPane1.setViewportView(Customer_Display_Info_Table);
+        Newspaper_Display_Info_Table.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                Newspaper_Display_Info_TableMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(Newspaper_Display_Info_Table);
 
         StartDateLabel.setText("Start Date");
 
@@ -143,9 +166,9 @@ public class Newspaper_Subscription_Page extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(CustID_Text_Field)
                     .addComponent(Pname_Text_Field)
-                    .addComponent(MiddleName_Text_Field)
-                    .addComponent(LastName_Text_Field)
-                    .addComponent(Address_Text_Field, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE))
+                    .addComponent(NoOfMonths_TextField)
+                    .addComponent(EndDate_TextField)
+                    .addComponent(Start_Date_TextField, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE))
                 .addGap(135, 135, 135)
                 .addComponent(Insert_Button)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -171,17 +194,17 @@ public class Newspaper_Subscription_Page extends javax.swing.JFrame {
                 .addGap(20, 20, 20)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(NoOfMonths)
-                    .addComponent(MiddleName_Text_Field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(NoOfMonths_TextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(Insert_Button)
                     .addComponent(Update_Button)
                     .addComponent(Delete_Button))
                 .addGap(22, 22, 22)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(EndDateLabel)
-                    .addComponent(LastName_Text_Field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(EndDate_TextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(26, 26, 26)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(Address_Text_Field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Start_Date_TextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(StartDateLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 164, Short.MAX_VALUE)
                 .addComponent(Customers_Back_Button)
@@ -190,29 +213,148 @@ public class Newspaper_Subscription_Page extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+ 
+    public int Calculate_Price(){
+        String freq =null; 
+        int price = 10;
+        int No_Of_Months = 0;
+        try {
+            String PubName = Pname_Text_Field.getText();
+            No_Of_Months = Integer.parseInt(NoOfMonths_TextField.getText());
+            
+            
+            String sqlfreq = "SELECT Nfrequency FROM "+Database+".NEWSPAPER Where Name IN ('"+PubName+"')";
+            
+            pst = conn.prepareStatement(sqlfreq);
+            rs = pst.executeQuery(sqlfreq);  
+            
+            if (rs.next()){
+                freq = rs.getString("Nfrequency");
+            }
+            
+            if (freq.equals("Weekly"))
+            {
+                price = No_Of_Months * 4;
+            }
+            else if (freq.equals("Daily"))
+            {
+                price = No_Of_Months * 30;
+            }
+      
+        //   price = No_Of_Months * rate;
+            
+        }catch(SQLException | HeadlessException ex) {
+            JOptionPane.showMessageDialog(null, ex);
+    }
+        return price;
+    }
+    
+    
+/*        public LocalDate calculateDate() throws SQLException
+            {
+                LocalDate StartDate = null;
+                StartDate.parse(Start_Date_TextField.getText());
+                LocalDate EndDate= null;
+                String PubName = Pname_Text_Field.getText();
+                String sql = "SELECT Rate FROM publication WHERE Name IN ('" + PubName +  "')"; //+ " AND Type = Magazine";
+                pst = conn.prepareStatement(sql);
+                rs = pst.executeQuery(sql); 
+              
+                
+                
+                return EndDate;
+            }
+    
+  */  
     private void Insert_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Insert_ButtonActionPerformed
 
         // TODO add your handling code here:
-        // price = 
+        
+        //PRICE = NoOfMonths * 
+        
+        
+        try {
+
+            int price = Calculate_Price();
+            
+            String sql = "INSERT INTO nsub "
+            + "(`IDnum`, `Pname`, `No_Of_Months`, `End_Date`, `Start_Date`, `Price`) "
+            + "VALUES (?, ?, ?, ?, ?, ?)";
+
+            //Price = No of issues * Rate(Dollar amount per item)
+            //End_Date = Start Date + No of Issues 
+            
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+Database, "root", "1234");
+            pst = conn.prepareStatement(sql);
+            
+           // LocalDate EndDate = calculateDate();
+
+            pst.setString(1,CustID_Text_Field.getText());
+            pst.setString(2,Pname_Text_Field.getText());
+            pst.setString(3,NoOfMonths_TextField.getText());
+            pst.setString(4,EndDate_TextField.getText());
+            pst.setString(5,Start_Date_TextField.getText());
+            pst.setInt(6,price);
+            pst.executeUpdate();
+            JOptionPane.showMessageDialog(null, "Inserted Successfully");
+        }catch(SQLException | HeadlessException ex) {
+            JOptionPane.showMessageDialog(null, ex);
+        }
+        //Refresh DB
+        showTableData();
+       
         
 
     }//GEN-LAST:event_Insert_ButtonActionPerformed
 
     private void Update_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Update_ButtonActionPerformed
         // TODO add your handling code here:
+        try {
+            
+            int price = Calculate_Price();
+                
+            String sql = "UPDATE nsub SET No_Of_Months=?, Start_Date=?, Price=? WHERE IDnum=? AND Pname=?";
+       
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+Database, User, Pass);
+            pst = conn.prepareStatement(sql);
+            
+            pst.setString(4,CustID_Text_Field.getText());
+            pst.setString(5,Pname_Text_Field.getText());
+            pst.setString(1,NoOfMonths_TextField.getText());
+            pst.setString(2,Start_Date_TextField.getText());
+            pst.setInt(3,price);
+
+           
+            pst.executeUpdate();
+            JOptionPane.showMessageDialog(null, "Updated Successfully");
+        }catch(SQLException | HeadlessException ex) {
+            JOptionPane.showMessageDialog(null, ex);
+        }
+        
+        //Refresh
+        showTableData();
    
     }//GEN-LAST:event_Update_ButtonActionPerformed
 
     private void Delete_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Delete_ButtonActionPerformed
         // TODO add your handling code here:
-  
+            try {
+            String sql = "DELETE FROM nsub WHERE IDnum =? AND Pname=?";
+ 
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+Database, User, Pass);
+            pst = conn.prepareStatement(sql);
+            pst.setString(1,CustID_Text_Field.getText());
+            pst.setString(2,Pname_Text_Field.getText());
+            pst.executeUpdate();
+            JOptionPane.showMessageDialog(null, "Deleted Successfully");
+        }catch(SQLException | HeadlessException ex) {
+            JOptionPane.showMessageDialog(null, ex);
+        }
+         
+        //Refresh
+        showTableData();
 
     }//GEN-LAST:event_Delete_ButtonActionPerformed
-
-    private void LastName_Text_FieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LastName_Text_FieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_LastName_Text_FieldActionPerformed
 
     private void Customers_Back_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Customers_Back_ButtonActionPerformed
         // TODO add your handling code here:
@@ -226,9 +368,47 @@ public class Newspaper_Subscription_Page extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_Pname_Text_FieldActionPerformed
 
+    private void Newspaper_Display_Info_TableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Newspaper_Display_Info_TableMouseClicked
+        // TODO add your handling code here:
+        int row = Newspaper_Display_Info_Table.getSelectedRow();
+        String selection = Newspaper_Display_Info_Table.getModel().getValueAt(row, 0).toString();
+        String sql = "Select * From nsub WHERE IDnum = " + selection; 
+        try { 
+            pst = conn.prepareStatement(sql);
+            rs = pst.executeQuery();
+            if (rs.next())
+            {
+                CustID_Text_Field.setText(rs.getString("IDnum"));
+                Pname_Text_Field.setText(rs.getString("Pname"));
+                NoOfMonths_TextField.setText(rs.getString("No_Of_Months"));
+                Start_Date_TextField.setText(rs.getString("Start_Date"));
+                
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+    }//GEN-LAST:event_Newspaper_Display_Info_TableMouseClicked
+
+    private void EndDate_TextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EndDate_TextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_EndDate_TextFieldActionPerformed
+
     /**
      * @param args the command line arguments
      */
+    public void showTableData()
+    {
+        try{
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+Database, User, Pass);
+             String sql = "SELECT * FROM `"+Database+"`.`nsub`";
+             pst = conn.prepareStatement(sql);
+             rs = pst.executeQuery();
+             Newspaper_Display_Info_Table.setModel(DbUtils.resultSetToTableModel(rs));
+            
+        } catch(Exception ex){
+            JOptionPane.showMessageDialog(null, ex);
+        }
+    }
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -262,21 +442,21 @@ public class Newspaper_Subscription_Page extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField Address_Text_Field;
     private javax.swing.JLabel CustID_Label;
     private javax.swing.JTextField CustID_Text_Field;
-    private javax.swing.JTable Customer_Display_Info_Table;
     private javax.swing.JButton Customers_Back_Button;
     private javax.swing.JLabel Customers_Label;
     private javax.swing.JButton Delete_Button;
     private javax.swing.JLabel EndDateLabel;
+    private javax.swing.JTextField EndDate_TextField;
     private javax.swing.JButton Insert_Button;
-    private javax.swing.JTextField LastName_Text_Field;
-    private javax.swing.JTextField MiddleName_Text_Field;
+    private javax.swing.JTable Newspaper_Display_Info_Table;
     private javax.swing.JLabel NoOfMonths;
+    private javax.swing.JTextField NoOfMonths_TextField;
     private javax.swing.JLabel Pname;
     private javax.swing.JTextField Pname_Text_Field;
     private javax.swing.JLabel StartDateLabel;
+    private javax.swing.JTextField Start_Date_TextField;
     private javax.swing.JButton Update_Button;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables

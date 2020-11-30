@@ -28,8 +28,8 @@ public class Magazine_Subscription_Page extends javax.swing.JFrame {
     Connection conn = null;
     PreparedStatement pst = null;
     ResultSet rs = null;
-    String Database = "Subscriptions";
-    String User = "Admin";
+    String Database = "databaseschema_5318";
+    String User = "root";
     String Pass = "1234";
     
     public Magazine_Subscription_Page() {
@@ -57,8 +57,6 @@ public class Magazine_Subscription_Page extends javax.swing.JFrame {
         Pname_Text_Field = new javax.swing.JTextField();
         NoOfIssues = new javax.swing.JLabel();
         NoOfIssues_Text_Field = new javax.swing.JTextField();
-        EndDate = new javax.swing.JLabel();
-        EndDate_Text_Field = new javax.swing.JTextField();
         StartDate_Text_Field = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         Magazine_Display_Info_Table = new javax.swing.JTable();
@@ -108,14 +106,6 @@ public class Magazine_Subscription_Page extends javax.swing.JFrame {
 
         NoOfIssues.setText("Number of Issues");
 
-        EndDate.setText("End Date");
-
-        EndDate_Text_Field.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                EndDate_Text_FieldActionPerformed(evt);
-            }
-        });
-
         Magazine_Display_Info_Table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null},
@@ -127,6 +117,11 @@ public class Magazine_Subscription_Page extends javax.swing.JFrame {
                 "Customer ID", "Pname", "No of Issue", "End Date", "Start Date", "Price"
             }
         ));
+        Magazine_Display_Info_Table.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                Magazine_Display_Info_TableMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(Magazine_Display_Info_Table);
 
         StartDate.setText("Start Date");
@@ -144,31 +139,33 @@ public class Magazine_Subscription_Page extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(Subscription_Label)
                         .addGap(556, 556, 556))))
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(107, 107, 107)
+                        .addComponent(StartDate)
+                        .addGap(27, 27, 27)
+                        .addComponent(StartDate_Text_Field, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(407, 407, 407)
+                        .addComponent(Insert_Button)))
+                .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(618, 618, 618)
-                            .addComponent(Update_Button)
-                            .addGap(130, 130, 130)
-                            .addComponent(Delete_Button))
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(69, 69, 69)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(EndDate)
-                                .addComponent(NoOfIssues)
-                                .addComponent(Pname)
-                                .addComponent(CustID_Label)
-                                .addComponent(StartDate))
-                            .addGap(18, 18, 18)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(CustID_Text_Field)
-                                .addComponent(Pname_Text_Field)
-                                .addComponent(NoOfIssues_Text_Field)
-                                .addComponent(EndDate_Text_Field)
-                                .addComponent(StartDate_Text_Field, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE))
-                            .addGap(135, 135, 135)
-                            .addComponent(Insert_Button)))
+                    .addGap(69, 69, 69)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(NoOfIssues)
+                        .addComponent(Pname)
+                        .addComponent(CustID_Label))
+                    .addGap(18, 18, 18)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(NoOfIssues_Text_Field, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
+                        .addComponent(Pname_Text_Field)
+                        .addComponent(CustID_Text_Field))
+                    .addGap(303, 303, 303)
+                    .addComponent(Update_Button)
+                    .addGap(130, 130, 130)
+                    .addComponent(Delete_Button)
                     .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addComponent(jScrollPane1))
         );
@@ -177,7 +174,13 @@ public class Magazine_Subscription_Page extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(97, 97, 97)
                 .addComponent(Subscription_Label)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 606, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 419, Short.MAX_VALUE)
+                .addComponent(Insert_Button)
+                .addGap(24, 24, 24)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(StartDate_Text_Field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(StartDate))
+                .addGap(120, 120, 120)
                 .addComponent(Subscription_Back_Button)
                 .addGap(49, 49, 49))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -196,18 +199,9 @@ public class Magazine_Subscription_Page extends javax.swing.JFrame {
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(NoOfIssues)
                         .addComponent(NoOfIssues_Text_Field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(Insert_Button)
                         .addComponent(Update_Button)
                         .addComponent(Delete_Button))
-                    .addGap(22, 22, 22)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(EndDate)
-                        .addComponent(EndDate_Text_Field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGap(26, 26, 26)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(StartDate_Text_Field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(StartDate))
-                    .addContainerGap(150, Short.MAX_VALUE)))
+                    .addContainerGap(238, Short.MAX_VALUE)))
         );
 
         pack();
@@ -317,13 +311,6 @@ public class Magazine_Subscription_Page extends javax.swing.JFrame {
             
             pst = conn.prepareStatement(sql);
             
-            System.out.println(EndDate);
-            System.out.println(CustID_Text_Field.getText());
-            System.out.println(Pname_Text_Field.getText());
-            System.out.println(NoOfIssues_Text_Field.getText());
-            System.out.println(EndDate_Text_Field.getText());
-            System.out.println(StartDate_Text_Field.getText());
-            System.out.println(price);
             pst.setString(1,CustID_Text_Field.getText()); 
             pst.setString(2,Pname_Text_Field.getText());
             pst.setString(3,NoOfIssues_Text_Field.getText());
@@ -396,9 +383,27 @@ public class Magazine_Subscription_Page extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_Pname_Text_FieldActionPerformed
 
-    private void EndDate_Text_FieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EndDate_Text_FieldActionPerformed
+    private void Magazine_Display_Info_TableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Magazine_Display_Info_TableMouseClicked
         // TODO add your handling code here:
-    }//GEN-LAST:event_EndDate_Text_FieldActionPerformed
+        int row = Magazine_Display_Info_Table.getSelectedRow();
+        String selection = Magazine_Display_Info_Table.getModel().getValueAt(row, 0).toString();
+        String sql = "Select * From msub WHERE IDnum = " + selection; 
+        try { 
+            pst = conn.prepareStatement(sql);
+            rs = pst.executeQuery();
+            if (rs.next())
+            {
+                CustID_Text_Field.setText(rs.getString("IDnum"));
+                Pname_Text_Field.setText(rs.getString("Pname"));
+                NoOfIssues_Text_Field.setText(rs.getString("No_Of_Issues"));
+                StartDate_Text_Field.setText(rs.getString("Start_Date"));
+                
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+
+    }//GEN-LAST:event_Magazine_Display_Info_TableMouseClicked
 
     /**
      * @param args the command line arguments
@@ -454,8 +459,6 @@ public class Magazine_Subscription_Page extends javax.swing.JFrame {
     private javax.swing.JLabel CustID_Label;
     private javax.swing.JTextField CustID_Text_Field;
     private javax.swing.JButton Delete_Button;
-    private javax.swing.JLabel EndDate;
-    private javax.swing.JTextField EndDate_Text_Field;
     private javax.swing.JButton Insert_Button;
     private javax.swing.JTable Magazine_Display_Info_Table;
     private javax.swing.JLabel NoOfIssues;
