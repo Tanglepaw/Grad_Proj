@@ -12,6 +12,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.Period;
+import java.time.temporal.ChronoUnit;
 import javax.swing.JOptionPane;
 import net.proteanit.sql.DbUtils;
 
@@ -27,8 +29,8 @@ public class Newspaper_Subscription_Page extends javax.swing.JFrame {
     Connection conn = null;
     PreparedStatement pst = null;
     ResultSet rs = null;
-    String Database = "databaseschema_5318";
-    String User = "root";
+    String Database = "Subscriptions";
+    String User = "Admin";
     String Pass = "1234";
     
     public Newspaper_Subscription_Page() {
@@ -53,9 +55,7 @@ public class Newspaper_Subscription_Page extends javax.swing.JFrame {
         Pname_Text_Field = new javax.swing.JTextField();
         NoOfMonths = new javax.swing.JLabel();
         NoOfMonths_TextField = new javax.swing.JTextField();
-        EndDateLabel = new javax.swing.JLabel();
         Customers_Label = new javax.swing.JLabel();
-        EndDate_TextField = new javax.swing.JTextField();
         Customers_Back_Button = new javax.swing.JButton();
         Start_Date_TextField = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -96,15 +96,7 @@ public class Newspaper_Subscription_Page extends javax.swing.JFrame {
 
         NoOfMonths.setText("Number of Months");
 
-        EndDateLabel.setText("End Date");
-
         Customers_Label.setText("NEWSPAPER SUBSCRIPTION");
-
-        EndDate_TextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                EndDate_TextFieldActionPerformed(evt);
-            }
-        });
 
         Customers_Back_Button.setText("Main Menu");
         Customers_Back_Button.addActionListener(new java.awt.event.ActionListener() {
@@ -157,7 +149,6 @@ public class Newspaper_Subscription_Page extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(55, 55, 55)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(EndDateLabel)
                     .addComponent(NoOfMonths)
                     .addComponent(CustID_Label)
                     .addComponent(StartDateLabel)
@@ -167,7 +158,6 @@ public class Newspaper_Subscription_Page extends javax.swing.JFrame {
                     .addComponent(CustID_Text_Field)
                     .addComponent(Pname_Text_Field)
                     .addComponent(NoOfMonths_TextField)
-                    .addComponent(EndDate_TextField)
                     .addComponent(Start_Date_TextField, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE))
                 .addGap(135, 135, 135)
                 .addComponent(Insert_Button)
@@ -198,15 +188,11 @@ public class Newspaper_Subscription_Page extends javax.swing.JFrame {
                     .addComponent(Insert_Button)
                     .addComponent(Update_Button)
                     .addComponent(Delete_Button))
-                .addGap(22, 22, 22)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(EndDateLabel)
-                    .addComponent(EndDate_TextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(26, 26, 26)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(Start_Date_TextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(StartDateLabel))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 164, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 226, Short.MAX_VALUE)
                 .addComponent(Customers_Back_Button)
                 .addGap(51, 51, 51))
         );
@@ -214,31 +200,53 @@ public class Newspaper_Subscription_Page extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
  
-    public int Calculate_Price(){
+    public float Calculate_Price() throws SQLException{
         String freq =null; 
-        int price = 10;
+        float price = 0;
+        int rate = 0;
         int No_Of_Months = 0;
+        LocalDate StartDate = LocalDate.parse(Start_Date_TextField.getText());
+        LocalDate EndDate = calculateDate();
+        Period p = Period.between(StartDate, EndDate);
+        long weeks = ChronoUnit.DAYS.between(StartDate, EndDate)/7;
         try {
             String PubName = Pname_Text_Field.getText();
             No_Of_Months = Integer.parseInt(NoOfMonths_TextField.getText());
             
             
             String sqlfreq = "SELECT Nfrequency FROM "+Database+".NEWSPAPER Where Name IN ('"+PubName+"')";
-            
             pst = conn.prepareStatement(sqlfreq);
             rs = pst.executeQuery(sqlfreq);  
-            
-            if (rs.next()){
+             if (rs.next()){
                 freq = rs.getString("Nfrequency");
+            }
+            
+            String sqlrate = "SELECT Rate FROM "+Database+".PUBLICATION Where Name IN ('"+PubName+"') AND Type = 'Newspaper';";
+            pst = conn.prepareStatement(sqlrate);
+            rs = pst.executeQuery(sqlrate);
+            
+            if (rs.next())
+            {
+                rate = rs.getInt("Rate");
             }
             
             if (freq.equals("Weekly"))
             {
-                price = No_Of_Months * 4;
+                price = (No_Of_Months * 4) * rate;
             }
-            else if (freq.equals("Daily"))
+            else if (freq.equals("7_Day"))
             {
-                price = No_Of_Months * 30;
+                price = (weeks*7) * rate;
+            }
+            else if (freq.equals("5_Day"))
+            {
+                //price = No_Of_Months * 30;
+                price = (weeks*5) * rate;
+            }
+            else if (freq.equals("2_Day"))
+            {
+                //price = No_Of_Months * 30;
+                price = (weeks*2) * rate;
             }
       
         //   price = No_Of_Months * rate;
@@ -250,22 +258,29 @@ public class Newspaper_Subscription_Page extends javax.swing.JFrame {
     }
     
     
-/*        public LocalDate calculateDate() throws SQLException
+        public LocalDate calculateDate() throws SQLException
             {
-                LocalDate StartDate = null;
-                StartDate.parse(Start_Date_TextField.getText());
+                String StartDate = null;
+               StartDate = Start_Date_TextField.getText();
+                
                 LocalDate EndDate= null;
+                
+                int months = Integer.parseInt(NoOfMonths_TextField.getText());
                 String PubName = Pname_Text_Field.getText();
-                String sql = "SELECT Rate FROM publication WHERE Name IN ('" + PubName +  "')"; //+ " AND Type = Magazine";
+                
+                /*String sql = "SELECT No_Of_Months FROM Newspaper WHERE Name IN ('" + PubName +  "')"; //+ " AND Type = Magazine";
                 pst = conn.prepareStatement(sql);
-                rs = pst.executeQuery(sql); 
-              
-                
-                
-                return EndDate;
+                rs = pst.executeQuery(sql); */
+
+                //months = rs.getInt("No_Of_Months");
+
+                    EndDate = LocalDate.parse(StartDate);
+                    EndDate = EndDate.plusMonths(months);
+        
+                    return EndDate;
             }
     
-  */  
+   
     private void Insert_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Insert_ButtonActionPerformed
 
         // TODO add your handling code here:
@@ -274,8 +289,9 @@ public class Newspaper_Subscription_Page extends javax.swing.JFrame {
         
         
         try {
-
-            int price = Calculate_Price();
+            LocalDate ED = calculateDate();
+            String EndDate = ED.toString(); 
+            float price = Calculate_Price();
             
             String sql = "INSERT INTO nsub "
             + "(`IDnum`, `Pname`, `No_Of_Months`, `End_Date`, `Start_Date`, `Price`) "
@@ -284,7 +300,7 @@ public class Newspaper_Subscription_Page extends javax.swing.JFrame {
             //Price = No of issues * Rate(Dollar amount per item)
             //End_Date = Start Date + No of Issues 
             
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+Database, "root", "1234");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+Database,User, "1234");
             pst = conn.prepareStatement(sql);
             
            // LocalDate EndDate = calculateDate();
@@ -292,9 +308,9 @@ public class Newspaper_Subscription_Page extends javax.swing.JFrame {
             pst.setString(1,CustID_Text_Field.getText());
             pst.setString(2,Pname_Text_Field.getText());
             pst.setString(3,NoOfMonths_TextField.getText());
-            pst.setString(4,EndDate_TextField.getText());
+            pst.setString(4,EndDate);
             pst.setString(5,Start_Date_TextField.getText());
-            pst.setInt(6,price);
+            pst.setFloat(6,price);
             pst.executeUpdate();
             JOptionPane.showMessageDialog(null, "Inserted Successfully");
         }catch(SQLException | HeadlessException ex) {
@@ -311,18 +327,20 @@ public class Newspaper_Subscription_Page extends javax.swing.JFrame {
         // TODO add your handling code here:
         try {
             
-            int price = Calculate_Price();
-                
-            String sql = "UPDATE nsub SET No_Of_Months=?, Start_Date=?, Price=? WHERE IDnum=? AND Pname=?";
+            float price = Calculate_Price();
+            LocalDate ED = calculateDate();
+            String EndDate = ED.toString(); 
+            String sql = "UPDATE nsub SET No_Of_Months=?,End_Date=?, Start_Date=?, Price=? WHERE IDnum=? AND Pname=?";
        
             conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+Database, User, Pass);
             pst = conn.prepareStatement(sql);
             
-            pst.setString(4,CustID_Text_Field.getText());
-            pst.setString(5,Pname_Text_Field.getText());
+            pst.setString(5,CustID_Text_Field.getText());
+            pst.setString(6,Pname_Text_Field.getText());
             pst.setString(1,NoOfMonths_TextField.getText());
-            pst.setString(2,Start_Date_TextField.getText());
-            pst.setInt(3,price);
+            pst.setString(2,EndDate);
+            pst.setString(3,Start_Date_TextField.getText());
+            pst.setFloat(4,price);
 
            
             pst.executeUpdate();
@@ -389,10 +407,6 @@ public class Newspaper_Subscription_Page extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_Newspaper_Display_Info_TableMouseClicked
 
-    private void EndDate_TextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EndDate_TextFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_EndDate_TextFieldActionPerformed
-
     /**
      * @param args the command line arguments
      */
@@ -447,8 +461,6 @@ public class Newspaper_Subscription_Page extends javax.swing.JFrame {
     private javax.swing.JButton Customers_Back_Button;
     private javax.swing.JLabel Customers_Label;
     private javax.swing.JButton Delete_Button;
-    private javax.swing.JLabel EndDateLabel;
-    private javax.swing.JTextField EndDate_TextField;
     private javax.swing.JButton Insert_Button;
     private javax.swing.JTable Newspaper_Display_Info_Table;
     private javax.swing.JLabel NoOfMonths;
