@@ -28,8 +28,8 @@ public class Magazine_Subscription_Page extends javax.swing.JFrame {
     Connection conn = null;
     PreparedStatement pst = null;
     ResultSet rs = null;
-    String Database = "databaseschema_5318";
-    String User = "root";
+    String Database = "Subscriptions";
+    String User = "Admin";
     String Pass = "1234";
     
     public Magazine_Subscription_Page() {
@@ -244,7 +244,6 @@ public class Magazine_Subscription_Page extends javax.swing.JFrame {
             {
                 String StartDate = null;
                StartDate = StartDate_Text_Field.getText();
-               //StartDate = "2020-02-2";
                 
                 LocalDate EndDate= null;
                 
@@ -256,8 +255,6 @@ public class Magazine_Subscription_Page extends javax.swing.JFrame {
                 String sql = "SELECT Mfrequency FROM Magazine WHERE Name IN ('" + PubName +  "')"; //+ " AND Type = Magazine";
                 pst = conn.prepareStatement(sql);
                 rs = pst.executeQuery(sql); 
-                
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-mm-dd"); 
                 
                 while(rs.next())
                 {
@@ -271,12 +268,12 @@ public class Magazine_Subscription_Page extends javax.swing.JFrame {
                 }
                 else if (Freq.equals("Monthly"))
                 {
-                    EndDate = LocalDate.parse(StartDate, formatter);
+                    EndDate = LocalDate.parse(StartDate);
                     EndDate = EndDate.plusMonths(1 * Issues);
                 }
                 else // Quarterly
                 {
-                    EndDate = EndDate.parse(StartDate, formatter);
+                    EndDate = EndDate.parse(StartDate);
                     EndDate = EndDate.plusMonths(3 * Issues);
                 }
                 
@@ -290,20 +287,14 @@ public class Magazine_Subscription_Page extends javax.swing.JFrame {
         try {
 
             int price = Calculate_Price();
-            
-            
 
             //Price = No of issues * Rate(Dollar amount per item)
             //End_Date = Start Date + No of Issues 
             
             conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+Database, User, "1234");
             
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             LocalDate ED = calculateDate();
-            ED.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
             String EndDate = ED.toString(); 
-            EndDate = "" + EndDate +"";
-            //java.sql.Date EndDate = java.sql.Date.valueOf(ED);
             
             String sql = "INSERT INTO msub "
             + "(`IDnum`, `Pname`, `No_Of_Issues`, `End_Date`, `Start_Date`, `Price`) "
@@ -315,7 +306,6 @@ public class Magazine_Subscription_Page extends javax.swing.JFrame {
             pst.setString(2,Pname_Text_Field.getText());
             pst.setString(3,NoOfIssues_Text_Field.getText());
             pst.setString(4,EndDate);
-            //pst.setString(4,EndDate_Text_Field.getText());
             pst.setString(5,StartDate_Text_Field.getText());
             pst.setInt(6,price);
             pst.executeUpdate();
