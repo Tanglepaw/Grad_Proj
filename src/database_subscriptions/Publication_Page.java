@@ -28,8 +28,8 @@ public class Publication_Page extends javax.swing.JFrame {
     Connection conn = null;
     PreparedStatement pst = null;
     ResultSet rs = null; 
-    String Database = "databaseschema_5318";
-    String User = "root";
+    String Database = "Subscriptions";
+    String User = "Admin";
     String Password = "1234";
     
     public Publication_Page() {
@@ -468,7 +468,7 @@ public class Publication_Page extends javax.swing.JFrame {
         // TODO add your handling code here:
         //Change frequency combo box depending on magazine or newspaper
         DefaultComboBoxModel mag = new DefaultComboBoxModel(new String[]{"Weekly", "Monthly", "Quarterly"});
-        DefaultComboBoxModel news = new DefaultComboBoxModel(new String[]{"Daily", "Weekly"});
+        DefaultComboBoxModel news = new DefaultComboBoxModel(new String[]{"7_Day", "5_Day", "2_Day", "Weekly"});
         if ("Magazine".equals(TableControl.getSelectedItem()))
         {
             FrequencyComBox.setModel(mag);
